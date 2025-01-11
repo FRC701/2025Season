@@ -6,20 +6,26 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import static edu.wpi.first.units.Units.derive;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 
 public class Roller extends SubsystemBase {
   /** Creates a new Roller. */
 
   private TalonFX rollerMotor;
+  private static boolean RollerActive;
   public RollerEnumState mRollerEnumState;
 
   public enum RollerEnumState {
-    S_Empty, S_IntakeAlgae, S_Eject
+    S_Empty, S_Loaded, S_Eject
   }
 
   public Roller() {
     rollerMotor = new TalonFX(Constants.RollerConstants.kRollerMotor);
+    RollerActive = false;
+    mRollerEnumState = RollerEnumState.S_Empty;
   }
 
   public void runRollerState() {
@@ -27,8 +33,8 @@ public class Roller extends SubsystemBase {
       case S_Empty:
         Empty();
         break;
-      case S_IntakeAlgae:
-        IntakeAlgae();
+      case S_Loaded:
+        Loaded();
         break;
       case S_Eject:
         Eject();
@@ -37,15 +43,20 @@ public class Roller extends SubsystemBase {
   }
 
   public void Empty() {
-    //placeholder
+   if (RollerActive) {
+    rollerMotor.setVoltage(-4);
+   }
+   else{
+    rollerMotor.setVoltage(0);
+   }
   }
 
-  public void IntakeAlgae() {
-    //placeholder
+  public void Loaded() {
+    rollerMotor.setVoltage(0);
   }
 
   public void Eject() {
-    //placeholder
+    rollerMotor.setVoltage(4);
   }
 
   @Override
