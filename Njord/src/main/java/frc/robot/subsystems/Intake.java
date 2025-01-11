@@ -17,7 +17,7 @@ public class Intake extends SubsystemBase {
   public IntakeEnumState mIntakeEnumState;
 
   public enum IntakeEnumState {
-    S_Empty, S_IntakeRun, S_IntakeEject
+    S_Empty, S_Loaded, S_IntakeEject
   }
 
   public Intake() {
@@ -31,8 +31,8 @@ public class Intake extends SubsystemBase {
       case S_Empty:
         Empty();
         break;
-      case S_IntakeRun:
-        IntakeRun();
+      case S_Loaded:
+        Loaded();
         break;
       case S_IntakeEject:
         IntakeEject();
@@ -45,14 +45,14 @@ public class Intake extends SubsystemBase {
     intakeMotor2.setVoltage(0);
   }
 
-  public void IntakeRun() {
-    intakeMotor1.set(0.1 /*placeholder*/);
-    intakeMotor2.set(0.1);
+  public void Loaded() {
+    intakeMotor1.setVoltage(-4);
+    intakeMotor2.setVoltage(-4);
   }
 
   public void IntakeEject() {
-    intakeMotor1.set(0.1 /*placeholder*/);
-    intakeMotor2.set(0.1);
+    intakeMotor1.setVoltage(4);
+    intakeMotor2.setVoltage(4);
   }
 
   @Override
