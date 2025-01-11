@@ -12,7 +12,7 @@ public class Pivot extends SubsystemBase {
   /** Creates a new Pivot. */
 
   private TalonFX pivotMotor;
-  public PivotEnumState mPivotEnumState;
+  public static PivotEnumState mPivotEnumState;
 
   public enum PivotEnumState {
     S_Raise, S_Middle, S_Lower

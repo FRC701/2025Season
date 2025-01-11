@@ -16,7 +16,7 @@ public class Roller extends SubsystemBase {
 
   private TalonFX rollerMotor;
   private static boolean RollerActive;
-  public RollerEnumState mRollerEnumState;
+  public static RollerEnumState mRollerEnumState;
 
   public enum RollerEnumState {
     S_Empty, S_Loaded, S_Eject
@@ -45,6 +45,9 @@ public class Roller extends SubsystemBase {
   public void Empty() {
    if (RollerActive) {
     rollerMotor.setVoltage(-4);
+    if (hasAlgae()) {
+      Roller.mRollerEnumState = RollerEnumState.S_Loaded;
+    }
    }
    else{
     rollerMotor.setVoltage(0);
@@ -57,6 +60,12 @@ public class Roller extends SubsystemBase {
 
   public void Eject() {
     rollerMotor.setVoltage(4);
+    Roller.mRollerEnumState = RollerEnumState.S_Empty;
+  }
+  //scores the piece!
+
+  public boolean hasAlgae() {
+    return true;
   }
 
   @Override
