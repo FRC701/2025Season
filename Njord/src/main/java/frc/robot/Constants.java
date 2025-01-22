@@ -16,7 +16,6 @@ public final class Constants {
 
   public static class IntakeConstants {
     public static final int kIntakeMotor1 = 3;
-    public static final int kIntakeMotor2 = 4;
   }
 
   public static class OperatorConstants {

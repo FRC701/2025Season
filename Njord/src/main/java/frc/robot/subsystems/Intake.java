@@ -13,7 +13,6 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
 
   private TalonFX intakeMotor1;
-  private TalonFX intakeMotor2;
   public static IntakeEnumState mIntakeEnumState;
   private static boolean coralChecker;
 
@@ -23,8 +22,6 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     intakeMotor1 = new TalonFX(Constants.IntakeConstants.kIntakeMotor1);
-    intakeMotor2 = new TalonFX(Constants.IntakeConstants.kIntakeMotor2);
-    intakeMotor2.setControl(new Follower(Constants.IntakeConstants.kIntakeMotor1, true));
     coralChecker = false;
     mIntakeEnumState = IntakeEnumState.S_Empty;
   }
@@ -44,23 +41,20 @@ public class Intake extends SubsystemBase {
   }
 
   public void Empty() {
-    if (coralChecker) {
+    //if (coralChecker) {
     intakeMotor1.setVoltage(1);
-    intakeMotor2.setVoltage(1);
       if(hasCoral()) {
         Intake.mIntakeEnumState = IntakeEnumState.S_Loaded;
       }
-    }
+    //}
   }
 
   public void Loaded() {
     intakeMotor1.setVoltage(0);
-    intakeMotor2.setVoltage(0);
   }
 
   public void IntakeEject() {
     intakeMotor1.setVoltage(4);
-    intakeMotor2.setVoltage(4);
     Intake.mIntakeEnumState = IntakeEnumState.S_Empty;
   }
 
