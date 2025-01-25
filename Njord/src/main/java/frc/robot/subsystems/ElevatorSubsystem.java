@@ -9,7 +9,6 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -17,7 +16,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private TalonFX elevatorMotor1;
   private TalonFX elevatorMotor2;
   public static int TargetLevel;
-  private int Counter = 0; 
+  private int ElevatorLevel;
 private DigitalInput MagLimit = new DigitalInput(0);
   public ElevatorState mElevatorState;
 
@@ -30,6 +29,9 @@ private DigitalInput MagLimit = new DigitalInput(0);
     elevatorMotor2 = new TalonFX(Constants.ElevatorConstants.kElevatorMotor2);
     elevatorMotor2.setControl(new Follower(Constants.ElevatorConstants.kElevatorMotor1, true));
 
+    ElevatorLevel = 0;
+    TargetLevel = 0;
+    
     mElevatorState = ElevatorState.S_Stopped;
   }
 
@@ -48,8 +50,8 @@ private DigitalInput MagLimit = new DigitalInput(0);
   }
 
   private void GoingUp(){
-   if(MagLimit.get()){
-    Counter++;
+   if(getLimitState()){
+    ElevatorLevel++;
     mElevatorState = ElevatorState.S_Stopped;
    } else{
     elevatorMotor1.setVoltage(4);
@@ -57,8 +59,8 @@ private DigitalInput MagLimit = new DigitalInput(0);
   }
 
   private void GoingDown(){
-    if(MagLimit.get()){
-      Counter--;
+    if(getLimitState()){
+      ElevatorLevel--;
       mElevatorState = ElevatorState.S_Stopped;
      } else{
       elevatorMotor1.setVoltage(-4);
@@ -66,24 +68,28 @@ private DigitalInput MagLimit = new DigitalInput(0);
   }
 
   private void Stopped(){
-    if(TargetLevel > Counter){
+    if(TargetLevel > ElevatorLevel){
     elevatorMotor1.setVoltage(4);
-    if(!MagLimit.get()){
+    if(!getLimitState()){
       mElevatorState = ElevatorState.S_GoingUp;
     }
-    } else if (TargetLevel < Counter){
+    } else if (TargetLevel < ElevatorLevel){
     elevatorMotor1.setVoltage(-4);
-    if(!MagLimit.get()){
+    if(!getLimitState()){
       mElevatorState = ElevatorState.S_GoingDown;
     }
     } else{
       elevatorMotor1.setVoltage(0);
     }
+  }
 
+  private boolean getLimitState(){
+    return MagLimit.get();
   }
 
   @Override
   public void periodic() {
+    runElevatorState();
     // This method will be called once per scheduler run
 
   }
