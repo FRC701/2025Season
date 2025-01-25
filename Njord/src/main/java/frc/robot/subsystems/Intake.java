@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
 
-  private TalonFX intakeMotor1;
+  private TalonFX intakeMotor;
   public static boolean kIntakeMotor_current;
   public static IntakeEnumState mIntakeEnumState;
   private static boolean hasCoral;
@@ -23,7 +23,7 @@ public class Intake extends SubsystemBase {
   }
 
   public Intake() {
-    intakeMotor1 = new TalonFX(Constants.IntakeConstants.kIntakeMotor1);
+    intakeMotor = new TalonFX(Constants.IntakeConstants.kIntakeMotor);
     hasCoral = false;
     mIntakeEnumState = IntakeEnumState.S_Empty;
   }
@@ -46,25 +46,21 @@ public class Intake extends SubsystemBase {
 
   public void Empty() {
     //if (coralChecker) {
-      if(hasCoral()){
-        intakeMotor1.setVoltage(1);
-      } else {
-        intakeMotor1.setVoltage(0);
+      if(!hasCoral()){
+        intakeMotor.setVoltage(1);
+        Intake.mIntakeEnumState = IntakeEnumState.S_Loaded;
       }
-    }
-      
-        //Intake.mIntakeEnumState = IntakeEnumState.S_Loaded;
-      
     //}
+  }
   
 
   public void Loaded() {
-    intakeMotor1.setVoltage(0);
+    intakeMotor.setVoltage(0);
   }
 
   public void IntakeEject() {
-    intakeMotor1.setVoltage(4);
-    Intake.mIntakeEnumState = IntakeEnumState.S_Empty;
+    intakeMotor.setVoltage(4);
+    //Intake.mIntakeEnumState = IntakeEnumState.S_Empty;
   }
 
   public boolean hasCoral() {
@@ -77,7 +73,7 @@ public class Intake extends SubsystemBase {
     runIntakeState();
     SmartDashboard.putBoolean("hasCoral", hasCoral);
     SmartDashboard.putString("IntakeState", mIntakeEnumState.toString());
- 
+    
 
 
 
