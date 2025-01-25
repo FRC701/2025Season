@@ -17,12 +17,12 @@ public class IntakeCommand extends InstantCommand {
   public IntakeCommand(Intake intake) {
     this.mIntake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(this.mIntake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    mIntake.IntakeEject();
     Intake.mIntakeEnumState = IntakeEnumState.S_IntakeEject;
   }
 }
