@@ -6,15 +6,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ElevateCommand extends InstantCommand {
-  private Elevator mElevator = new Elevator();
+  private ElevatorSubsystem mElevator = new ElevatorSubsystem();
   private int target;
-  public ElevateCommand(Elevator elevator, int target) {
+  public ElevateCommand(ElevatorSubsystem elevator, int target) {
     this.mElevator = elevator;
     this.target = target;
 
@@ -25,6 +25,6 @@ public class ElevateCommand extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Elevator.TargetLevel = target;
+    ElevatorSubsystem.TargetLevel = target;
   }
 }
