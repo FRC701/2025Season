@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix6.hardware.TalonFX;
-//import com.ctre.phoenix6.controls.Follower;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends SubsystemBase {
@@ -16,7 +15,6 @@ public class Intake extends SubsystemBase {
   private TalonFX intakeMotor;
   public static boolean kIntakeMotor_current;
   public static IntakeEnumState mIntakeEnumState;
-  private static boolean hasCoral;
 
   public enum IntakeEnumState {
     S_Empty, S_Loaded, S_IntakeEject
@@ -24,7 +22,6 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     intakeMotor = new TalonFX(Constants.IntakeConstants.kIntakeMotor);
-    hasCoral = false;
     mIntakeEnumState = IntakeEnumState.S_Empty;
   }
  
@@ -45,12 +42,12 @@ public class Intake extends SubsystemBase {
   }
 
   public void Empty() {
-    //if (coralChecker) {
       if(!hasCoral()){
         intakeMotor.setVoltage(1);
+      }
+      else {
         Intake.mIntakeEnumState = IntakeEnumState.S_Loaded;
       }
-    //}
   }
   
 
@@ -64,14 +61,22 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean hasCoral() {
-    return true;
+    if (intakeMotor.getStatorCurrent().getValueAsDouble() > 5.0 /*placeholder value, will change later*/) {
+      return true;
+    } 
+    else {
+      return false;
+    }
   }
+  
+  
+
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     runIntakeState();
-    SmartDashboard.putBoolean("hasCoral", hasCoral);
+    SmartDashboard.putBoolean("hasCoral", hasCoral());
     SmartDashboard.putString("IntakeState", mIntakeEnumState.toString());
     
 
