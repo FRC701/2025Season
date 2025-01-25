@@ -16,6 +16,12 @@ public final class Constants {
 
   public static class TiltConstants {
     public static final int kTiltMotor = 15;
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double HighPosition = 0;
+    public static final double MidPosition = -10;
+    public static final double LowPosition = -20;
   }
 
   public static class OperatorConstants {
