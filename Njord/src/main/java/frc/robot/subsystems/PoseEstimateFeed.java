@@ -1,0 +1,131 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.subsystems;
+
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonPipelineResult;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.estimator.KalmanFilter;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+public class PoseEstimateFeed extends SubsystemBase {
+
+  
+  private static final edu.wpi.first.math.Vector<N3> stateStdDevs = Constants.statdev;
+  private static final edu.wpi.first.math.Vector<N3> visionMeasurementStdDevs = Constants.visdev;
+
+  private PoseStrategy m_poseStrategy = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
+  private AprilTagFieldLayout m_aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+
+  private PhotonPoseEstimator m_limeLightPoseEstimator;
+  private PhotonPoseEstimator m_fishEyePoseEstimator;
+
+  private SwerveDrivePoseEstimator m_globalEstimator;
+
+  private PhotonCamera m_limeLight;
+  private PhotonCamera m_fishEye;
+
+  // private PhotonPipelineResult m_limeLightPipeline;
+  // private PhotonPipelineResult m_fishEyePipeline;
+
+  public static final Transform3d m_robotToLimelightTransform3d = Constants.robotToLimeLight3d;
+  public static final Transform3d m_robotToFishEyeTransform3d = Constants.robotToFishEye3d;
+
+  private KalmanFilter m_kalmanFilter;
+
+  private Field2d m_field2d = new Field2d();
+
+  AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+
+  /** Creates a new PoseEstimateFeed. */
+  public PoseEstimateFeed() {
+    m_limeLight = new PhotonCamera("Limelight3");
+    m_fishEye = new PhotonCamera("FishEye1");
+
+    m_limeLightPoseEstimator = new PhotonPoseEstimator(m_aprilTagFieldLayout, m_poseStrategy,
+        m_robotToLimelightTransform3d);
+    m_fishEyePoseEstimator = new PhotonPoseEstimator(m_aprilTagFieldLayout, m_poseStrategy,
+        m_robotToFishEyeTransform3d);
+
+    // m_globalEstimator = new SwerveDrivePoseEstimator(null, null, null, null);
+
+    m_limeLightPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+    m_fishEyePoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+
+    m_kalmanFilter = new KalmanFilter<>(null, null, null, stateStdDevs, visionMeasurementStdDevs, getDistance());
+    SmartDashboard.putData("GameField", m_field2d);
+  }
+
+  public void UpdateVisionPose() {
+    var limeLight = m_limeLight.getLatestResult();
+    var fisheye = m_fishEye.getLatestResult();
+    final Optional<EstimatedRobotPose> optionalEstimatedPoseLime = m_limeLightPoseEstimator.update(limeLight);
+    if (optionalEstimatedPoseLime.isPresent()) {
+      m_field2d.setRobotPose(optionalEstimatedPoseLime.get().estimatedPose.toPose2d());
+    }
+    final Optional<EstimatedRobotPose> optionalEstimatedPoseFish = m_limeLightPoseEstimator.update(fisheye);
+    if (optionalEstimatedPoseFish.isPresent()) {
+      m_field2d.setRobotPose(optionalEstimatedPoseFish.get().estimatedPose.toPose2d());
+    }
+  }
+
+  public double getDistance(){
+    double distanceToTarget = 0;
+    var limeLight = m_limeLight.getLatestResult();
+    distanceToTarget = limeLight.getBestTarget().getBestCameraToTarget().getTranslation().getX();
+    // var m_AprilTagTargetPose3d =  m_aprilTagFieldLayout.getTagPose(limeLight.getBestTarget().getFiducialId());
+    // if(m_AprilTagTargetPose3d.isEmpty()){
+    //  distanceToTarget = PhotonUtils.calculateDistanceToTargetMeters(m_robotToLimelightTransform3d.getZ(),
+    //  m_AprilTagTargetPose3d.get().getY(),
+    //   m_robotToLimelightTransform3d.getRotation().getY(),
+    //     m_AprilTagTargetPose3d.get().getRotation().getY());
+    // }
+    return Units.metersToInches(distanceToTarget);
+  }
+
+  // public void UpdateGlobalPose() {
+  // if (updateLimelightRobotToField().isPresent() &&
+  // m_limeLightPipeline.targets.get(0).poseAmbiguity < 0.4) {
+  // m_globalEstimator.addVisionMeasurement(updateLimelightRobotToField().get().estimatedPose.toPose2d(),
+  // m_limeLightPipeline.getTimestampSeconds());
+  // }
+  // if (updateFishEyeRobotToField().isPresent() &&
+  // m_fishEyePipeline.targets.get(0).poseAmbiguity < 0.4) {
+  // m_globalEstimator.addVisionMeasurement(updateFishEyeRobotToField().get().estimatedPose.toPose2d(),
+  // m_fishEyePipeline.getTimestampSeconds());
+  // }
+  // Pose2d fieldPose = m_globalEstimator.update(null, null);
+  // m_field2d.setRobotPose(fieldPose);
+  // }
+
+  @Override
+  public void periodic() {
+    var limeLight = m_limeLight.getLatestResult();
+    var fishEye = m_fishEye.getLatestResult();
+
+    if (limeLight.hasTargets() || fishEye.hasTargets()) {
+      UpdateVisionPose(); // remove when using global
+      SmartDashboard.putNumber("Distance Inches", getDistance());
+    }
+    // This method will be called once per scheduler run
+  }
+}
