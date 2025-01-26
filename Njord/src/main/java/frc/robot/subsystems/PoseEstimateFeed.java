@@ -13,6 +13,8 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.estimator.KalmanFilter;
@@ -20,16 +22,17 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.generated.TunerConstants;
 
 public class PoseEstimateFeed extends SubsystemBase {
 
-  
   private static final edu.wpi.first.math.Vector<N3> stateStdDevs = Constants.statdev;
   private static final edu.wpi.first.math.Vector<N3> visionMeasurementStdDevs = Constants.visdev;
 
@@ -56,22 +59,33 @@ public class PoseEstimateFeed extends SubsystemBase {
 
   AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
+  CommandSwerveDrivetrain m_swerveDrivetrain;
+
   /** Creates a new PoseEstimateFeed. */
   public PoseEstimateFeed() {
     m_limeLight = new PhotonCamera("Limelight3");
     m_fishEye = new PhotonCamera("FishEye1");
+
+    m_swerveDrivetrain = TunerConstants.createDrivetrain();
 
     m_limeLightPoseEstimator = new PhotonPoseEstimator(m_aprilTagFieldLayout, m_poseStrategy,
         m_robotToLimelightTransform3d);
     m_fishEyePoseEstimator = new PhotonPoseEstimator(m_aprilTagFieldLayout, m_poseStrategy,
         m_robotToFishEyeTransform3d);
 
-    // m_globalEstimator = new SwerveDrivePoseEstimator(null, null, null, null);
+    m_globalEstimator = new SwerveDrivePoseEstimator(
+        m_swerveDrivetrain.getKinematics(),
+        m_swerveDrivetrain.getState().RawHeading,
+        m_swerveDrivetrain.getState().ModulePositions,
+        AutoBuilder.getCurrentPose(),
+        stateStdDevs,
+        visionMeasurementStdDevs);
 
     m_limeLightPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     m_fishEyePoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
-    m_kalmanFilter = new KalmanFilter<>(null, null, null, stateStdDevs, visionMeasurementStdDevs, getDistance());
+    // m_kalmanFilter = new KalmanFilter<>(null, null, null, stateStdDevs, visionMeasurementStdDevs, getDistance());
+
     SmartDashboard.putData("GameField", m_field2d);
   }
 
@@ -88,34 +102,37 @@ public class PoseEstimateFeed extends SubsystemBase {
     }
   }
 
-  public double getDistance(){
+  public double getDistance() {
     double distanceToTarget = 0;
     var limeLight = m_limeLight.getLatestResult();
     distanceToTarget = limeLight.getBestTarget().getBestCameraToTarget().getTranslation().getX();
-    // var m_AprilTagTargetPose3d =  m_aprilTagFieldLayout.getTagPose(limeLight.getBestTarget().getFiducialId());
+    // var m_AprilTagTargetPose3d =
+    // m_aprilTagFieldLayout.getTagPose(limeLight.getBestTarget().getFiducialId());
     // if(m_AprilTagTargetPose3d.isEmpty()){
-    //  distanceToTarget = PhotonUtils.calculateDistanceToTargetMeters(m_robotToLimelightTransform3d.getZ(),
-    //  m_AprilTagTargetPose3d.get().getY(),
-    //   m_robotToLimelightTransform3d.getRotation().getY(),
-    //     m_AprilTagTargetPose3d.get().getRotation().getY());
+    // distanceToTarget =
+    // PhotonUtils.calculateDistanceToTargetMeters(m_robotToLimelightTransform3d.getZ(),
+    // m_AprilTagTargetPose3d.get().getY(),
+    // m_robotToLimelightTransform3d.getRotation().getY(),
+    // m_AprilTagTargetPose3d.get().getRotation().getY());
     // }
     return Units.metersToInches(distanceToTarget);
   }
 
-  // public void UpdateGlobalPose() {
-  // if (updateLimelightRobotToField().isPresent() &&
-  // m_limeLightPipeline.targets.get(0).poseAmbiguity < 0.4) {
-  // m_globalEstimator.addVisionMeasurement(updateLimelightRobotToField().get().estimatedPose.toPose2d(),
-  // m_limeLightPipeline.getTimestampSeconds());
-  // }
-  // if (updateFishEyeRobotToField().isPresent() &&
-  // m_fishEyePipeline.targets.get(0).poseAmbiguity < 0.4) {
-  // m_globalEstimator.addVisionMeasurement(updateFishEyeRobotToField().get().estimatedPose.toPose2d(),
-  // m_fishEyePipeline.getTimestampSeconds());
-  // }
-  // Pose2d fieldPose = m_globalEstimator.update(null, null);
-  // m_field2d.setRobotPose(fieldPose);
-  // }
+  public Pose2d UpdateGlobalPose() {
+    var limeLight = m_limeLight.getLatestResult();
+    var fisheye = m_fishEye.getLatestResult();
+    final Optional<EstimatedRobotPose> optionalEstimatedPoseLime = m_limeLightPoseEstimator.update(limeLight);
+    if (optionalEstimatedPoseLime.isPresent()) {
+      m_globalEstimator.addVisionMeasurement(optionalEstimatedPoseLime.get().estimatedPose.toPose2d(), limeLight.getTimestampSeconds());
+    }
+    final Optional<EstimatedRobotPose> optionalEstimatedPoseFish = m_limeLightPoseEstimator.update(fisheye);
+    if (optionalEstimatedPoseFish.isPresent()) {
+      m_globalEstimator.addVisionMeasurement(optionalEstimatedPoseFish.get().estimatedPose.toPose2d(), fisheye.getTimestampSeconds());
+    }
+    // m_globalEstimator.update(m_swerveDrivetrain.getState().RawHeading, m_swerveDrivetrain.getState().ModulePositions);
+
+    return m_globalEstimator.update(m_swerveDrivetrain.getState().RawHeading, m_swerveDrivetrain.getState().ModulePositions);
+  }
 
   @Override
   public void periodic() {
@@ -123,7 +140,8 @@ public class PoseEstimateFeed extends SubsystemBase {
     var fishEye = m_fishEye.getLatestResult();
 
     if (limeLight.hasTargets() || fishEye.hasTargets()) {
-      UpdateVisionPose(); // remove when using global
+      // UpdateVisionPose(); // remove when using global
+      m_field2d.setRobotPose(UpdateGlobalPose());
       SmartDashboard.putNumber("Distance Inches", getDistance());
     }
     // This method will be called once per scheduler run
