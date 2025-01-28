@@ -77,7 +77,8 @@ public class PoseEstimateFeed extends SubsystemBase {
         m_swerveDrivetrain.getKinematics(),
         m_swerveDrivetrain.getState().RawHeading,
         m_swerveDrivetrain.getState().ModulePositions,
-        AutoBuilder.getCurrentPose(),
+        null,
+        //AutoBuilder.getCurrentPose(),
         stateStdDevs,
         visionMeasurementStdDevs);
 
