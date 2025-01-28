@@ -14,13 +14,18 @@ package frc.robot;
  */
 public final class Constants {
 
+
   public static class ElevatorConstants {
-    public static final int kElevatorMotor1 = 1;
-    public static final int kElevatorMotor2 = 2;
+    public static final int kElevatorMotor1 = 24;
+    public static final int kElevatorMotor2 = 25;
+  }
+  
+  public static class IntakeConstants {
+    public static final int kIntakeMotor = 23;
   }
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
-    public static final int kCODriverControllerPort = 1;
+    public static final int kCoDriverControllerPort = 1;
   }
 }
