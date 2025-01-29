@@ -6,6 +6,9 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.Climber;
 //import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -26,14 +29,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final Climber mClimber = new Climber();
   private final Intake m_intakeSubsytem = new Intake();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController Driver =
       new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
-  private final CommandXboxController CODriver =
-      new CommandXboxController(Constants.OperatorConstants.kCoDriverControllerPort);
-
+  private final CommandXboxController CoDriver =
+      new CommandXboxController(OperatorConstants.kCoDriverControllerPort);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   //Constructor
   public RobotContainer() {
@@ -63,6 +66,8 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    CODriver.a().whileTrue(new ClimbCommand(mClimber, 0.7));
     */
     Driver.rightBumper().onTrue(new IntakeCommand(m_intakeSubsytem));
   }
