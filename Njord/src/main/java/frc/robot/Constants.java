@@ -28,4 +28,8 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final int kCoDriverControllerPort = 1;
   }
+  public static class ClimberConstants {
+  public static final int kClimbLeft = 0;
+  public static final int kClimbRight = 1;
+  }
 }
