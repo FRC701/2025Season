@@ -14,6 +14,12 @@ package frc.robot;
  */
 public final class Constants {
 
+
+  public static class ElevatorConstants {
+    public static final int kElevatorMotor1 = 24;
+    public static final int kElevatorMotor2 = 25;
+  }
+  
   public static class IntakeConstants {
     public static final int kIntakeMotor = 23;
   }
