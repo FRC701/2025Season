@@ -10,7 +10,7 @@ import frc.robot.commands.ElevateCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.commands.ClimbCommand;
-import frc.robot.commands.ExampleCommand;
+//import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Climber;
 //import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
@@ -63,7 +63,7 @@ public class RobotContainer {
 
    //Binds Buttons To Actions
   private void configureBindings() {
-    /*
+    
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
@@ -73,15 +73,15 @@ public class RobotContainer {
 
     Driver.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    CODriver.povCenter().onTrue(new ElevateCommand(mElevator, 0));
-    CODriver.a().onTrue(new ElevateCommand(mElevator, 1));
-    CODriver.x().onTrue(new ElevateCommand(mElevator, 2));
-    CODriver.b().onTrue(new ElevateCommand(mElevator, 3));
-    CODriver.y().onTrue(new ElevateCommand(mElevator, 4));
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    CoDriver.povCenter().onTrue(new ElevateCommand(mElevator, 0));
+    CoDriver.a().onTrue(new ElevateCommand(mElevator, 1));
+    CoDriver.x().onTrue(new ElevateCommand(mElevator, 2));
+    CoDriver.b().onTrue(new ElevateCommand(mElevator, 3));
+    CoDriver.y().onTrue(new ElevateCommand(mElevator, 4));
+    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    CODriver.a().whileTrue(new ClimbCommand(mClimber, 0.7));
-    */
+    //CODriver.a().whileTrue(new ClimbCommand(mClimber, 0.7));
+    
     Driver.rightBumper().onTrue(new IntakeCommand(m_intakeSubsytem));
   }
 

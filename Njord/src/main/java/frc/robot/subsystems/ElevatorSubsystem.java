@@ -69,15 +69,15 @@ private DigitalInput MagLimit = new DigitalInput(0);
 
   private void Stopped(){
     if(TargetLevel > ElevatorLevel){
-    elevatorMotor1.setVoltage(4);
-    if(!getLimitState()){
-      mElevatorState = ElevatorState.S_GoingUp;
-    }
+      elevatorMotor1.setVoltage(4);
+      if(!getLimitState()){
+        mElevatorState = ElevatorState.S_GoingUp;
+      }
     } else if (TargetLevel < ElevatorLevel){
-    elevatorMotor1.setVoltage(-4);
-    if(!getLimitState()){
-      mElevatorState = ElevatorState.S_GoingDown;
-    }
+      elevatorMotor1.setVoltage(-4);
+      if(!getLimitState()){
+        mElevatorState = ElevatorState.S_GoingDown;
+      }
     } else{
       elevatorMotor1.setVoltage(0);
     }
