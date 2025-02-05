@@ -13,7 +13,9 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
+  public static class AlgaeIntakeConstants {
+   public static final int kAlgaeIntakeMotor = 27;
+  } 
 
   public static class ElevatorConstants {
     public static final int kElevatorMotor1 = 24;
