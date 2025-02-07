@@ -9,6 +9,8 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ElevateCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.commands.AlgaeIntakeCommand;
 import frc.robot.commands.ClimbCommand;
 //import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Climber;
@@ -35,6 +37,7 @@ public class RobotContainer {
   private final ElevatorSubsystem mElevator = new ElevatorSubsystem();
   private final Climber mClimber = new Climber();
   private final Intake m_intakeSubsytem = new Intake();
+  private final AlgaeIntake mAlgaeIntake = new AlgaeIntake();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController Driver =
@@ -83,6 +86,8 @@ public class RobotContainer {
     //CODriver.a().whileTrue(new ClimbCommand(mClimber, 0.7));
     
     Driver.rightBumper().onTrue(new IntakeCommand(m_intakeSubsytem));
+
+    Driver.y().onTrue(new AlgaeIntakeCommand(mAlgaeIntake));
   }
 
 
