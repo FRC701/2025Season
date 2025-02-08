@@ -48,21 +48,33 @@ private double setLog = (SysIdRoutineLog) -> setLog(SysIdRoutineLog);
 
 
 
-  private final SysIdRoutine mSysIdRoutine = 
-    new SysIdRoutine(
-      new SysIdRoutine.Config(Volts.per(Seconds).of(1.2), Volts.of(12), Seconds.of(10)),
-      new SysIdRoutine.Mechanism(
-        (setVolts,
-         log -> {
-          log.motor("drive-left")
-          .voltage(
-          mVoltage.mut_replace(
-            elevatorMotor1.get() * RobotController.getBatteryVoltage(), Volts)
-            .linearPosition(mDistance.mut_replace(elevatorMotor1.getSelectedSensorPosition()))
-          )
-         },
-          this,
-           "elevatorSysId")));
+private final SysIdRoutine mSysIdRoutine = 
+   new SysIdRoutine(
+     new SysIdRoutine.Config(Volts.per(Seconds).of(1.2), Volts.of(12), Seconds.of(10)),
+     new SysIdRoutine.Mechanism(
+      voltage -> {
+        elevatorMotor1.setVoltage(voltage);
+      },
+        log -> {
+        log.motor("drive")
+        .voltage(
+         mVoltage.mut_replace(
+           elevatorMotor1.get() * RobotController.getBatteryVoltage(), Volts)
+          .linearPosition(mDistance.mut_replace(elevatorMotor1.getPosition().getValueAsDouble(), Meters)
+          .linearVelocity(
+            m_velocity.mut_replace(elevatorMotor1.getPosition().getRate(), MetersPerSecond))));
+        
+        },
+         this,
+        "elevatorSysId"));
+
+public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+  return routine.quasistatic(direction);
+  }
+          
+public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+  return routine.dynamic(direction);
+  }
     
       
 
@@ -71,6 +83,7 @@ private double setLog = (SysIdRoutineLog) -> setLog(SysIdRoutineLog);
     elevatorMotor1 = new TalonFX(Constants.ElevatorConstants.kElevatorMotor1);
     elevatorMotor2 = new TalonFX(Constants.ElevatorConstants.kElevatorMotor2);
     elevatorMotor2.setControl(new Follower(Constants.ElevatorConstants.kElevatorMotor1, true));
+    
 
     ElevatorLevel = 0;
     TargetLevel = 0;
@@ -130,6 +143,7 @@ private double setLog = (SysIdRoutineLog) -> setLog(SysIdRoutineLog);
     return MagLimit.get();
   }
 
+  
   @Override
   public void periodic() {
     runElevatorState();
