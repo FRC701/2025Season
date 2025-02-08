@@ -5,12 +5,27 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.MutAcceleration;
+import edu.wpi.first.units.measure.MutDistance;
+import edu.wpi.first.units.measure.MutLinearVelocity;
+import edu.wpi.first.units.measure.MutVoltage;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.subsystems.ElevatorSubsystem.ElevatorState;
 
 public class ElevatorSubsystem extends SubsystemBase {
   private TalonFX elevatorMotor1;
@@ -23,6 +38,34 @@ private DigitalInput MagLimit = new DigitalInput(0);
   public enum ElevatorState {
     S_GoingUp, S_GoingDown, S_Stopped
     }
+
+  private final MutVoltage mVoltage = Volts.mutable(0);
+  private final MutDistance mDistance = Meters.mutable(0);
+  private final MutLinearVelocity mVelocity = MetersPerSecond.mutable(0);
+
+private Voltage setVolts = (Voltage volts) -> setVoltage(volts);
+private double setLog = (SysIdRoutineLog) -> setLog(SysIdRoutineLog);
+
+
+
+  private final SysIdRoutine mSysIdRoutine = 
+    new SysIdRoutine(
+      new SysIdRoutine.Config(Volts.per(Seconds).of(1.2), Volts.of(12), Seconds.of(10)),
+      new SysIdRoutine.Mechanism(
+        (setVolts,
+         log -> {
+          log.motor("drive-left")
+          .voltage(
+          mVoltage.mut_replace(
+            elevatorMotor1.get() * RobotController.getBatteryVoltage(), Volts)
+            .linearPosition(mDistance.mut_replace(elevatorMotor1.getSelectedSensorPosition()))
+          )
+         },
+          this,
+           "elevatorSysId")));
+    
+      
+
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
     elevatorMotor1 = new TalonFX(Constants.ElevatorConstants.kElevatorMotor1);
@@ -31,7 +74,7 @@ private DigitalInput MagLimit = new DigitalInput(0);
 
     ElevatorLevel = 0;
     TargetLevel = 0;
-    
+  
     mElevatorState = ElevatorState.S_Stopped;
   }
 
