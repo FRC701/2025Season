@@ -50,7 +50,7 @@ private double setLog = (SysIdRoutineLog) -> setLog(SysIdRoutineLog);
 
 private final SysIdRoutine mSysIdRoutine = 
    new SysIdRoutine(
-     new SysIdRoutine.Config(Volts.per(Seconds).of(1.2), Volts.of(12), Seconds.of(10)),
+     new SysIdRoutine.Config(),
      new SysIdRoutine.Mechanism(
       voltage -> {
         elevatorMotor1.setVoltage(voltage);
