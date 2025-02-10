@@ -61,8 +61,7 @@ private final SysIdRoutine mSysIdRoutine =
          mVoltage.mut_replace(
            elevatorMotor1.get() * RobotController.getBatteryVoltage(), Volts)
           .linearPosition(mDistance.mut_replace(elevatorMotor1.getPosition().getValueAsDouble(), Meters)
-          .linearVelocity(
-            m_velocity.mut_replace(elevatorMotor1.getPosition().getRate(), MetersPerSecond))));
+          .angularVelocity(elevatorMotor1.getVelocity().getValue())
         
         },
          this,
