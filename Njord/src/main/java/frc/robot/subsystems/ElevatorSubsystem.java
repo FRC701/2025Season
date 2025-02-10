@@ -68,7 +68,7 @@ private final SysIdRoutine mSysIdRoutine =
         "elevatorSysId"));
 
 public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-  return routine.quasistatic(direction);
+  return mSysIdRoutine.quasistatic(direction);
   }
           
 public Command sysIdDynamic(SysIdRoutine.Direction direction) {
