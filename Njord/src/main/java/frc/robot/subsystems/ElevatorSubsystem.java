@@ -72,7 +72,7 @@ public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
   }
           
 public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-  return routine.dynamic(direction);
+  return mSysIdRoutine.dynamic(direction);
   }
     
       
