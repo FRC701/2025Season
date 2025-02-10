@@ -58,8 +58,7 @@ private final SysIdRoutine mSysIdRoutine =
         log -> {
         log.motor("elevator")
         .voltage(
-         mVoltage.mut_replace(
-           elevatorMotor1.get() * RobotController.getBatteryVoltage(), Volts)
+           elevatorMotor1.getMotorVoltage().getValue())
           .angularPosition(elevatorMotor1.getPosition().getValue())
           .angularVelocity(elevatorMotor1.getVelocity().getValue())
         
