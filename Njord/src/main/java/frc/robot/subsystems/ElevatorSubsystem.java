@@ -53,7 +53,7 @@ private final SysIdRoutine mSysIdRoutine =
      new SysIdRoutine.Config(),
      new SysIdRoutine.Mechanism(
       voltage -> {
-        elevatorMotor1.setVoltage(voltage);
+        elevatorMotor1.setVoltage(voltage.magnitude());
       },
         log -> {
         log.motor("elevator")
