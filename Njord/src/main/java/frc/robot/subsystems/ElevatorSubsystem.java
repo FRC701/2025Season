@@ -56,7 +56,7 @@ private final SysIdRoutine mSysIdRoutine =
         elevatorMotor1.setVoltage(voltage);
       },
         log -> {
-        log.motor("drive")
+        log.motor("elevator")
         .voltage(
          mVoltage.mut_replace(
            elevatorMotor1.get() * RobotController.getBatteryVoltage(), Volts)
