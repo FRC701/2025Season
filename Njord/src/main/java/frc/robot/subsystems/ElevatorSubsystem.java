@@ -39,7 +39,6 @@ private DigitalInput MagLimit = new DigitalInput(0);
     S_GoingUp, S_GoingDown, S_Stopped
     }
 
-  private final MutVoltage mVoltage = Volts.mutable(0);
   private final MutDistance mDistance = Meters.mutable(0);
   private final MutLinearVelocity mVelocity = MetersPerSecond.mutable(0);
 
