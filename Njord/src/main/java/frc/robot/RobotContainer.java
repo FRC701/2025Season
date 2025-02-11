@@ -84,10 +84,10 @@ public class RobotContainer {
     
     Driver.rightBumper().onTrue(new IntakeCommand(m_intakeSubsytem));
     
-    CoDriver.a().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    CoDriver.b().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    CoDriver.x().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    CoDriver.y().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    CoDriver.a().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdQuasistatic(Direction.kForward));
+    CoDriver.b().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdQuasistatic(Direction.kReverse));
+    CoDriver.x().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdDynamic(Direction.kForward));
+    CoDriver.y().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdDynamic(Direction.kReverse));
 
   }
 
