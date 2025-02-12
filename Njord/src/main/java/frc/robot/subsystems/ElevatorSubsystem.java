@@ -5,12 +5,15 @@
 
 package frc.robot.subsystems;
 
+
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.subsystems.ElevatorSubsystem.ElevatorState;
 
 public class ElevatorSubsystem extends SubsystemBase {
   private TalonFX elevatorMotor1;
@@ -23,15 +26,52 @@ private DigitalInput MagLimit = new DigitalInput(0);
   public enum ElevatorState {
     S_GoingUp, S_GoingDown, S_Stopped
     }
+
+  private final MutLinearVelocity mVelocity = MetersPerSecond.mutable(0);
+
+private Voltage setVolts = (Voltage volts) -> setVoltage(volts);
+private double setLog = (SysIdRoutineLog) -> setLog(SysIdRoutineLog);
+
+
+
+private final SysIdRoutine mSysIdRoutine = 
+   new SysIdRoutine(
+     new SysIdRoutine.Config(),
+     new SysIdRoutine.Mechanism(
+      voltage -> {
+        elevatorMotor1.setVoltage(voltage.magnitude());
+      },
+        log -> {
+        log.motor("elevator")
+        .voltage(
+           elevatorMotor1.getMotorVoltage().getValue())
+          .angularPosition(elevatorMotor1.getPosition().getValue())
+          .angularVelocity(elevatorMotor1.getVelocity().getValue())
+        
+        },
+         this,
+        "elevatorSysId"));
+
+public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+  return mSysIdRoutine.quasistatic(direction);
+  }
+          
+public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+  return mSysIdRoutine.dynamic(direction);
+  }
+    
+      
+
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
     elevatorMotor1 = new TalonFX(Constants.ElevatorConstants.kElevatorMotor1);
     elevatorMotor2 = new TalonFX(Constants.ElevatorConstants.kElevatorMotor2);
     elevatorMotor2.setControl(new Follower(Constants.ElevatorConstants.kElevatorMotor1, true));
+    
 
     ElevatorLevel = 0;
     TargetLevel = 0;
-    
+  
     mElevatorState = ElevatorState.S_Stopped;
   }
 
@@ -87,6 +127,7 @@ private DigitalInput MagLimit = new DigitalInput(0);
     return MagLimit.get();
   }
 
+  
   @Override
   public void periodic() {
     runElevatorState();
