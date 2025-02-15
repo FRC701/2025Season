@@ -6,10 +6,15 @@
 package frc.robot.subsystems;
 
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.units.measure.MutLinearVelocity;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
@@ -64,8 +69,8 @@ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
 
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
-    elevatorMotor1 = new TalonFX(Constants.ElevatorConstants.kElevatorMotor1);
-    elevatorMotor2 = new TalonFX(Constants.ElevatorConstants.kElevatorMotor2);
+    elevatorMotor1 = new TalonFX(Constants.ElevatorConstants.kElevatorMotor1, Constants.kCarnivoreName);
+    elevatorMotor2 = new TalonFX(Constants.ElevatorConstants.kElevatorMotor2, Constants.kCarnivoreName);
     elevatorMotor2.setControl(new Follower(Constants.ElevatorConstants.kElevatorMotor1, true));
     
 

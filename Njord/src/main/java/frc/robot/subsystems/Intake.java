@@ -42,46 +42,31 @@ public class Intake extends SubsystemBase {
   }
 
   public void Empty() {
-      if(!hasCoral()){
-        intakeMotor.setVoltage(1);
-      }
-      else {
+    if (coralChecker) {
+    intakeMotor1.setVoltage(1);
+      if(hasCoral()) {
         Intake.mIntakeEnumState = IntakeEnumState.S_Loaded;
       }
+    }else{
+      intakeMotor1.setVoltage(0);
+    }
   }
-  
 
   public void Loaded() {
-    intakeMotor.setVoltage(0);
+    intakeMotor1.setVoltage(0);
   }
 
   public void IntakeEject() {
-    intakeMotor.setVoltage(4);
-    //Intake.mIntakeEnumState = IntakeEnumState.S_Empty;
+    intakeMotor1.setVoltage(4);
+    Intake.mIntakeEnumState = IntakeEnumState.S_Empty;
   }
 
   public boolean hasCoral() {
-    if (intakeMotor.getStatorCurrent().getValueAsDouble() > 5.0 /*placeholder value, will change later*/) {
-      return true;
-    } 
-    else {
-      return false;
-    }
+    return true;
   }
-  
-  
-
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    runIntakeState();
-    SmartDashboard.putBoolean("hasCoral", hasCoral());
-    SmartDashboard.putString("IntakeState", mIntakeEnumState.toString());
-    
-
-
-
-
   }
 }
