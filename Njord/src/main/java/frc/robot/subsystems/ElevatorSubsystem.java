@@ -32,12 +32,6 @@ private DigitalInput MagLimit = new DigitalInput(0);
     S_GoingUp, S_GoingDown, S_Stopped
     }
 
-  private final MutLinearVelocity mVelocity = MetersPerSecond.mutable(0);
-
-private Voltage setVolts = (Voltage volts) -> setVoltage(volts);
-private double setLog = (SysIdRoutineLog) -> setLog(SysIdRoutineLog);
-
-
 
 private final SysIdRoutine mSysIdRoutine = 
    new SysIdRoutine(
@@ -51,8 +45,7 @@ private final SysIdRoutine mSysIdRoutine =
         .voltage(
            elevatorMotor1.getMotorVoltage().getValue())
           .angularPosition(elevatorMotor1.getPosition().getValue())
-          .angularVelocity(elevatorMotor1.getVelocity().getValue())
-        
+          .angularVelocity(elevatorMotor1.getVelocity().getValue());        
         },
          this,
         "elevatorSysId"));
