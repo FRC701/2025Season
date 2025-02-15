@@ -42,22 +42,22 @@ public class Intake extends SubsystemBase {
   }
 
   public void Empty() {
-    if (coralChecker) {
-    intakeMotor1.setVoltage(1);
+    if (!hasCoral()) {
+    intakeMotor.setVoltage(1);
       if(hasCoral()) {
         Intake.mIntakeEnumState = IntakeEnumState.S_Loaded;
       }
     }else{
-      intakeMotor1.setVoltage(0);
+      intakeMotor.setVoltage(0);
     }
   }
 
   public void Loaded() {
-    intakeMotor1.setVoltage(0);
+    intakeMotor.setVoltage(0);
   }
 
   public void IntakeEject() {
-    intakeMotor1.setVoltage(4);
+    intakeMotor.setVoltage(4);
     Intake.mIntakeEnumState = IntakeEnumState.S_Empty;
   }
 
