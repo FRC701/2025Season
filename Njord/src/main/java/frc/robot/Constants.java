@@ -22,6 +22,7 @@ public final class Constants {
     public static final double HighPosition = 0;
     public static final double MidPosition = -10;
     public static final double LowPosition = -20;
+    public static final double kGearRatio = 1/8;
   }
 
   public static class OperatorConstants {
