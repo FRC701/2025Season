@@ -16,12 +16,13 @@ public final class Constants {
   public static final String kCarnivoreName = "Cani";
 
   public static class ElevatorConstants {
-    public static final int kElevatorMotor1 = 24;
-    public static final int kElevatorMotor2 = 25;
+    public static final int kElevatorLeft = 2;
+    public static final int kElevatorRight = 4;
   }
   
   public static class IntakeConstants {
-    public static final int kIntakeMotor = 23;
+    public static final int kIntakeMotor1 = 23;
+    public static final int kIntakeMotor2 = 0;
   }
 
   public static class OperatorConstants {

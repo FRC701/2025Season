@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
 
-  private TalonFX intakeMotor;
+  private TalonFX intakeMotor1;
+  private TalonFX intakeMotor2;
   public static boolean kIntakeMotor_current;
   public static IntakeEnumState mIntakeEnumState;
 
@@ -21,7 +22,8 @@ public class Intake extends SubsystemBase {
   }
 
   public Intake() {
-    intakeMotor = new TalonFX(Constants.IntakeConstants.kIntakeMotor);
+    intakeMotor1 = new TalonFX(Constants.IntakeConstants.kIntakeMotor1);
+    intakeMotor2 = new TalonFX(Constants.IntakeConstants.kIntakeMotor2);
     mIntakeEnumState = IntakeEnumState.S_Empty;
   }
  
@@ -43,21 +45,26 @@ public class Intake extends SubsystemBase {
 
   public void Empty() {
     if (!hasCoral()) {
-    intakeMotor.setVoltage(1);
+    intakeMotor1.setVoltage(1);
+    intakeMotor2.setVoltage(1);
       if(hasCoral()) {
         Intake.mIntakeEnumState = IntakeEnumState.S_Loaded;
       }
     }else{
-      intakeMotor.setVoltage(0);
+      intakeMotor1.setVoltage(0);
+      intakeMotor2.setVoltage(0);
     }
   }
 
   public void Loaded() {
-    intakeMotor.setVoltage(0);
+    intakeMotor1.setVoltage(0);
+    intakeMotor2.setVoltage(0);
   }
 
   public void IntakeEject() {
-    intakeMotor.setVoltage(4);
+    intakeMotor1.setVoltage(4);
+    intakeMotor2.setVoltage(4);
+
     Intake.mIntakeEnumState = IntakeEnumState.S_Empty;
   }
 
