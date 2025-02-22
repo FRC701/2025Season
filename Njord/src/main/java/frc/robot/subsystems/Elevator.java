@@ -16,6 +16,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -35,10 +36,13 @@ public class Elevator extends SubsystemBase {
 
   private TalonFXConfiguration mTalonFXConfig;
 
+  public static ElevatorState mElevatorState;
+
 
   public Elevator() {
-    m_elevatorMotor = new TalonFX(23);
-    m_elevatorMotorf = new TalonFX(24, "cani");
+
+    m_elevatorMotor = new TalonFX(Constants.ElevatorConstants.kElevatorMotor,"cani");
+    m_elevatorMotorf = new TalonFX(Constants.ElevatorConstants.kElevatorMotor2, "cani");
 
     var fx_cfg = new MotorOutputConfigs();
 
@@ -48,6 +52,11 @@ public class Elevator extends SubsystemBase {
   
     m_elevatorMotor.getConfigurator().apply(fx_cfg);
     m_elevatorMotorf.getConfigurator().apply(fx_cfg);
+
+        mTalonFXConfig = new TalonFXConfiguration().withVoltage(new VoltageConfigs()
+        .withPeakForwardVoltage(4)
+        .withPeakReverseVoltage(-4));
+
 
 
      var Slot0Configs = new Slot0Configs();
@@ -60,7 +69,32 @@ public class Elevator extends SubsystemBase {
 
     m_elevatorMotor.getConfigurator().apply(Slot0Configs, 0.05);
 
-    //  m_elevatorMotorf.setControl(new Follower(23, true));
+
+     m_elevatorMotorf.setControl(new Follower(Constants.ElevatorConstants.kElevatorMotor, true));
+  }
+  public void runElevatorState(){
+    switch (mElevatorState){
+      case S_Reset:
+      resetPosition();
+      break;
+      case S_L1:
+      setPosition(0);
+      break;
+      case S_L2:
+      setPosition(2); //placeholder
+      break;
+      case S_L3:
+      setPosition(4); //placeholder
+      break;
+      case S_L4:
+      setPosition(6); //placeholder
+      break;
+    }
+  }
+    
+  public enum ElevatorState {
+    S_Reset,S_L1, S_L2, S_L3, S_L4
+
   }
 
   public double rotationsToInches(double angle){
@@ -72,8 +106,11 @@ public class Elevator extends SubsystemBase {
   }
 
   public void resetPosition(){
-    m_elevatorMotor.setPosition(0);
-    
+    m_elevatorMotor.setVoltage(-3); 
+    if(atBottom()){
+      m_elevatorMotor.setPosition(0.0);
+      stop();
+    }
   }
 
   public void setPosition(double position){
@@ -85,6 +122,7 @@ public class Elevator extends SubsystemBase {
     m_elevatorMotor.setVoltage(0);
   }
 
+
   public void SpinPositive(){
     m_elevatorMotor.setVoltage(1);
   }
@@ -92,8 +130,15 @@ public class Elevator extends SubsystemBase {
   public void SpinNegative(){
     m_elevatorMotor.setVoltage(-1);
   }
+
+  public boolean atBottom(){
+    return m_elevatorMotor.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
+  }
+
+
   @Override
   public void periodic() {
+    runElevatorState();
     SmartDashboard.putNumber("getRaw", m_elevatorMotor.getRotorPosition().getValueAsDouble());
 
     SmartDashboard.putNumber("isConfig", m_elevatorMotor.getDeviceID());

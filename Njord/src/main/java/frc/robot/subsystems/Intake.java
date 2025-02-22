@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -85,6 +86,4 @@ public class Intake extends SubsystemBase {
     SmartDashboard.putBoolean("rollersenabled", enableRollers);
 
     SmartDashboard.putString("getState", intakeState.toString());
-    // This method will be called once per scheduler run
   }
-}
