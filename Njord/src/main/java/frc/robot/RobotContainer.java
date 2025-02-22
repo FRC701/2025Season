@@ -6,11 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.ElevatorLevelsCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.Level1;
-import frc.robot.commands.Level2;
-import frc.robot.commands.Level3;
-import frc.robot.commands.Level4;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -56,10 +53,10 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
 
-    m_driverController.x().onTrue(new Level1(m_elevator));
-    m_driverController.a().onTrue(new Level2(m_elevator));
-    m_driverController.y().onTrue(new Level3(m_elevator));
-    m_driverController.b().onTrue(new Level4(m_elevator));
+    m_driverController.x().onTrue(new ElevatorLevelsCommand(1));
+    m_driverController.a().onTrue(new ElevatorLevelsCommand(2));
+    m_driverController.y().onTrue(new ElevatorLevelsCommand(3));
+    m_driverController.b().onTrue(new ElevatorLevelsCommand(4));
 
   }
 

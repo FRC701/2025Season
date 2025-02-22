@@ -6,27 +6,34 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Elevator.ElevatorState;
+import frc.robot.subsystems.Elevator.ElevatorState;;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Level2 extends InstantCommand {
-  private Elevator mElevator;
-
-  public Level2(Elevator elevator) {
-    this.mElevator = elevator;
-    addRequirements(mElevator);
-
-
-
+public class ElevatorLevelsCommand extends InstantCommand {
+  int level = 0;
+  public ElevatorLevelsCommand(int level) {
+    this.level = level;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Elevator.mElevatorState = ElevatorState.S_L2;
-
+    switch(level){
+      case 1:
+        Elevator.mElevatorState = ElevatorState.S_L1;
+        break;
+      case 2:
+        Elevator.mElevatorState = ElevatorState.S_L2;
+        break;
+      case 3:
+        Elevator.mElevatorState = ElevatorState.S_L3;
+        break;
+      case 4:
+        Elevator.mElevatorState = ElevatorState.S_L4;
+        break;
+    }
   }
 }
