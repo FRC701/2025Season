@@ -36,8 +36,8 @@ public class Elevator extends SubsystemBase {
 
 
   public Elevator() {
-    m_elevatorMotor = new TalonFX(23);
-    m_elevatorMotorf = new TalonFX(24);
+    m_elevatorMotor = new TalonFX(23, "cani");
+    m_elevatorMotorf = new TalonFX(24, "cani");
 
     var fx_cfg = new MotorOutputConfigs();
 
@@ -81,12 +81,20 @@ public class Elevator extends SubsystemBase {
   public void stop(){
     m_elevatorMotor.setVoltage(0);
   }
+
+  public void SpinPositive(){
+    m_elevatorMotor.setVoltage(4);
+  }
+
+  public void SpinNegative(){
+    m_elevatorMotor.setVoltage(-3);
+  }
   @Override
   public void periodic() {
     SmartDashboard.putNumber("getRaw", m_elevatorMotor.getRotorPosition().getValueAsDouble());
 
     SmartDashboard.putNumber("isConfig", m_elevatorMotor.getDeviceID());
-    setPosition(SmartDashboard.getNumber("DesiredHeight", 0));
+    // setPosition(SmartDashboard.getNumber("DesiredHeight", 0));
     SmartDashboard.putNumber("Height", getPosition());
     // This method will be called once per scheduler run
   }
