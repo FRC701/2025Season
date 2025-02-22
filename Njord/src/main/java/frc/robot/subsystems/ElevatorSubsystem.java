@@ -89,9 +89,9 @@ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
 
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
-    elevatorLeft = new TalonFX(Constants.ElevatorConstants.kElevatorLeft, Constants.kCarnivoreName);
-    elevatorRight = new TalonFX(Constants.ElevatorConstants.kElevatorRight, Constants.kCarnivoreName);
-    elevatorRight.setControl(new Follower(Constants.ElevatorConstants.kElevatorLeft, true));
+    elevatorLeft = new TalonFX(Constants.ElevatorConstantsOld.kElevatorLeft, Constants.kCarnivoreName);
+    elevatorRight = new TalonFX(Constants.ElevatorConstantsOld.kElevatorRight, Constants.kCarnivoreName);
+    elevatorRight.setControl(new Follower(Constants.ElevatorConstantsOld.kElevatorLeft, true));
     
 
     ElevatorLevel = 0;

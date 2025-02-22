@@ -6,15 +6,15 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ElevateCommand;
+import frc.robot.commands.ElevatorLevelsCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.Elevator;
+import frc.robot.commands.ElevateCommand;
+import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.commands.ClimbCommand;
-//import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Climber;
-//import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -32,6 +32,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 //All code besides import goes into this
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+
+  private final Elevator m_elevator = new Elevator();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ElevatorSubsystem mElevator = new ElevatorSubsystem();
   private final Climber mClimber = new Climber();
@@ -72,13 +74,19 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
 
-    Driver.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    CoDriver.povCenter().onTrue(new ElevateCommand(mElevator, 0));
-    CoDriver.a().onTrue(new ElevateCommand(mElevator, 1));
-    CoDriver.x().onTrue(new ElevateCommand(mElevator, 2));
-    CoDriver.b().onTrue(new ElevateCommand(mElevator, 3));
-    CoDriver.y().onTrue(new ElevateCommand(mElevator, 4));
+    CoDriver.x().onTrue(new ElevatorLevelsCommand(1));
+    CoDriver.a().onTrue(new ElevatorLevelsCommand(2));
+    CoDriver.y().onTrue(new ElevatorLevelsCommand(3));
+    CoDriver.b().onTrue(new ElevatorLevelsCommand(4));
+
+     //Driver.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+       //Backup
+     //CoDriver.povCenter().onTrue(new ElevateCommand(mElevator, 0));
+     //CoDriver.a().onTrue(new ElevateCommand(mElevator, 1));
+     //CoDriver.x().onTrue(new ElevateCommand(mElevator, 2));
+     //CoDriver.b().onTrue(new ElevateCommand(mElevator, 3));
+     //CoDriver.y().onTrue(new ElevateCommand(mElevator, 4));
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
     //CODriver.a().whileTrue(new ClimbCommand(mClimber, 0.7));
@@ -89,6 +97,7 @@ public class RobotContainer {
     CoDriver.b().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdQuasistatic(Direction.kReverse));
     CoDriver.x().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdDynamic(Direction.kForward));
     CoDriver.y().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdDynamic(Direction.kReverse));
+
 
   }
 

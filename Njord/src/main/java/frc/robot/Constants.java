@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants {
   public static final String kCarnivoreName = "Cani";
 
-  public static class ElevatorConstants {
+  public static class ElevatorConstantsOld {
     public static final int kElevatorLeft = 2;
     public static final int kElevatorRight = 4;
   }
@@ -32,5 +32,9 @@ public final class Constants {
   public static class ClimberConstants {
   public static final int kClimbLeft = 0;
   public static final int kClimbRight = 1;
+  }
+  public static class ElevatorConstants {
+    public static final int kElevatorMotor = 4;
+    public static final int kElevatorMotor2 = 2;
   }
 }
