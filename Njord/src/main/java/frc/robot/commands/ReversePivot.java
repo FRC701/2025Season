@@ -5,27 +5,26 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Pivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class RunElevator extends Command {
-  Elevator mElevator = new Elevator();
-    /** Creates a new RunElevator. */
-  public RunElevator() {
+public class ReversePivot extends Command {
+
+  Pivot mElevator = new Pivot();
+  /** Creates a new ReverseElevator. */
+  public ReversePivot() {
     addRequirements(mElevator);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mElevator.SpinPositive();
+    mElevator.SpinNegative();
   }
 
   // Called once the command ends or is interrupted.
