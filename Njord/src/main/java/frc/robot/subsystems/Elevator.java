@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -36,10 +37,12 @@ public class Elevator extends SubsystemBase {
 
 
   public Elevator() {
-    m_elevatorMotor = new TalonFX(23, "cani");
+    m_elevatorMotor = new TalonFX(23);
     m_elevatorMotorf = new TalonFX(24, "cani");
 
     var fx_cfg = new MotorOutputConfigs();
+
+    mTalonFXConfig = new TalonFXConfiguration().withVoltage(new VoltageConfigs().withPeakForwardVoltage(1).withPeakReverseVoltage(-1));
 
     fx_cfg.NeutralMode = NeutralModeValue.Brake;
   
@@ -57,7 +60,7 @@ public class Elevator extends SubsystemBase {
 
     m_elevatorMotor.getConfigurator().apply(Slot0Configs, 0.05);
 
-     m_elevatorMotorf.setControl(new Follower(23, true));
+    //  m_elevatorMotorf.setControl(new Follower(23, true));
   }
 
   public double rotationsToInches(double angle){
@@ -83,18 +86,18 @@ public class Elevator extends SubsystemBase {
   }
 
   public void SpinPositive(){
-    m_elevatorMotor.setVoltage(4);
+    m_elevatorMotor.setVoltage(1);
   }
 
   public void SpinNegative(){
-    m_elevatorMotor.setVoltage(-3);
+    m_elevatorMotor.setVoltage(-1);
   }
   @Override
   public void periodic() {
     SmartDashboard.putNumber("getRaw", m_elevatorMotor.getRotorPosition().getValueAsDouble());
 
     SmartDashboard.putNumber("isConfig", m_elevatorMotor.getDeviceID());
-    // setPosition(SmartDashboard.getNumber("DesiredHeight", 0));
+    setPosition(SmartDashboard.getNumber("DesiredHeight", 0));
     SmartDashboard.putNumber("Height", getPosition());
     // This method will be called once per scheduler run
   }
