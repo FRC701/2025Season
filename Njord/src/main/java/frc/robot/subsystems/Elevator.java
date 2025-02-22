@@ -16,6 +16,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -69,42 +70,28 @@ public class Elevator extends SubsystemBase {
   }
   public void runElevatorState(){
     switch (mElevatorState){
+      case S_Reset:
+      resetPosition();
+      break;
       case S_L1:
-      S_L1();
+      setPosition(0);
       break;
       case S_L2:
-      S_L2();
+      setPosition(2); //placeholder
       break;
       case S_L3:
-      S_L3();
+      setPosition(4); //placeholder
       break;
       case S_L4:
-      S_L4();
+      setPosition(6); //placeholder
       break;
-
-
-
-
-      }
     }
-  
-
-  
+  }
+    
   public enum ElevatorState {
-    S_L1, S_L2, S_L3, S_L4
+    S_Reset,S_L1, S_L2, S_L3, S_L4
   }
-  private void S_L1(){
-    setPositon(0); 
-  }
-  private void S_L2(){
-    setPositon(2); //placeholder value
-  }
-  private void S_L3(){
-    setPositon(2); //placeholder
-  }
-  private void S_L4(){
-    setPositon(2); //placeholder
-  }
+
   public double rotationsToInches(double angle){
     return angle * kSproketCircumfrence;
   }
@@ -114,8 +101,11 @@ public class Elevator extends SubsystemBase {
   }
 
   public void resetPosition(){
-    m_elevatorMotor.setPosition(0);
-    
+    m_elevatorMotor.setVoltage(-3); 
+    if(atBottom()){
+      m_elevatorMotor.setPosition(0.0);
+      stop();
+    }
   }
 
   public void setPosition(double position){
@@ -125,6 +115,10 @@ public class Elevator extends SubsystemBase {
 
   public void stop(){
     m_elevatorMotor.setVoltage(0);
+  }
+
+  public boolean atBottom(){
+    return m_elevatorMotor.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
   }
 
   @Override
