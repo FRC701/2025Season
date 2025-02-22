@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -34,10 +35,12 @@ public class Elevator extends SubsystemBase {
 
   private TalonFXConfiguration mTalonFXConfig;
 
+  public static ElevatorState mElevatorState;
+
 
   public Elevator() {
-    m_elevatorMotor = new TalonFX(23);
-    m_elevatorMotorf = new TalonFX(24);
+    m_elevatorMotor = new TalonFX(Constants.ElevatorConstants.kElevatorMotor,"cani");
+    m_elevatorMotorf = new TalonFX(Constants.ElevatorConstants.kElevatorMotor2, "cani");
 
     var fx_cfg = new MotorOutputConfigs();
 
@@ -45,6 +48,11 @@ public class Elevator extends SubsystemBase {
   
     m_elevatorMotor.getConfigurator().apply(fx_cfg);
     m_elevatorMotorf.getConfigurator().apply(fx_cfg);
+
+        mTalonFXConfig = new TalonFXConfiguration().withVoltage(new VoltageConfigs()
+        .withPeakForwardVoltage(4)
+        .withPeakReverseVoltage(-4));
+
 
 
      var Slot0Configs = new Slot0Configs();
@@ -57,9 +65,46 @@ public class Elevator extends SubsystemBase {
 
     m_elevatorMotor.getConfigurator().apply(Slot0Configs, 0.05);
 
-     m_elevatorMotorf.setControl(new Follower(23, true));
+     m_elevatorMotorf.setControl(new Follower(Constants.ElevatorConstants.kElevatorMotor, true));
   }
+  public void runElevatorState(){
+    switch (mElevatorState){
+      case S_L1:
+      S_L1();
+      break;
+      case S_L2:
+      S_L2();
+      break;
+      case S_L3:
+      S_L3();
+      break;
+      case S_L4:
+      S_L4();
+      break;
 
+
+
+
+      }
+    }
+  
+
+  
+  public enum ElevatorState {
+    S_L1, S_L2, S_L3, S_L4
+  }
+  private void S_L1(){
+    setPositon(0); 
+  }
+  private void S_L2(){
+    setPositon(2); //placeholder value
+  }
+  private void S_L3(){
+    setPositon(2); //placeholder
+  }
+  private void S_L4(){
+    setPositon(2); //placeholder
+  }
   public double rotationsToInches(double angle){
     return angle * kSproketCircumfrence;
   }
@@ -81,8 +126,10 @@ public class Elevator extends SubsystemBase {
   public void stop(){
     m_elevatorMotor.setVoltage(0);
   }
+
   @Override
   public void periodic() {
+    runElevatorState();
     SmartDashboard.putNumber("getRaw", m_elevatorMotor.getRotorPosition().getValueAsDouble());
 
     SmartDashboard.putNumber("isConfig", m_elevatorMotor.getDeviceID());
