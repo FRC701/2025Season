@@ -6,11 +6,14 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.EnableRollers;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Outtake;
 import frc.robot.commands.ReverseElevator;
 import frc.robot.commands.RunElevator;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -24,7 +27,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private final Elevator m_elevator = new Elevator();
+  // private final Elevator m_elevator = new Elevator();
+  private final Intake m_intakeSubsystem = new Intake();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -54,8 +58,8 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    m_driverController.y().whileTrue(new RunElevator());
-    m_driverController.a().whileTrue(new ReverseElevator());
+    m_driverController.y().onTrue(new EnableRollers());
+    m_driverController.a().whileTrue(new Outtake());
   }
 
   /**
@@ -65,6 +69,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
+
     return Autos.exampleAuto(m_exampleSubsystem);
   }
 }
