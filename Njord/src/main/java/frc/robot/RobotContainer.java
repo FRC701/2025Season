@@ -12,9 +12,7 @@ import frc.robot.commands.EnableRollers;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.Outtake;
-import frc.robot.commands.ElevateCommand;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
@@ -37,7 +35,6 @@ public class RobotContainer {
 
   private final Elevator m_elevator = new Elevator();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ElevatorSubsystem mElevator = new ElevatorSubsystem();
   private final Climber mClimber = new Climber();
   private final Intake m_intakeSubsytem = new Intake();
 
@@ -82,25 +79,13 @@ public class RobotContainer {
     CoDriver.y().onTrue(new ElevatorLevelsCommand(3));
     CoDriver.b().onTrue(new ElevatorLevelsCommand(4));
 
-     //Driver.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-       //Backup
-     //CoDriver.povCenter().onTrue(new ElevateCommand(mElevator, 0));
-     //CoDriver.a().onTrue(new ElevateCommand(mElevator, 1));
-     //CoDriver.x().onTrue(new ElevateCommand(mElevator, 2));
-     //CoDriver.b().onTrue(new ElevateCommand(mElevator, 3));
-     //CoDriver.y().onTrue(new ElevateCommand(mElevator, 4));
-    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-
     //CODriver.a().whileTrue(new ClimbCommand(mClimber, 0.7));
     
 
       CoDriver.rightBumper().onTrue(new EnableRollers());
       CoDriver.leftBumper().onTrue(new Outtake());
     
-    CoDriver.a().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdQuasistatic(Direction.kForward));
-    CoDriver.b().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdQuasistatic(Direction.kReverse));
-    CoDriver.x().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdDynamic(Direction.kForward));
-    CoDriver.y().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdDynamic(Direction.kReverse));
+
 
 
   }

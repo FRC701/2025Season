@@ -14,11 +14,6 @@ package frc.robot;
  */
 public final class Constants {
   public static final String kCarnivoreName = "Cani";
-
-  public static class ElevatorConstantsOld {
-    public static final int kElevatorLeft = 2;
-    public static final int kElevatorRight = 4;
-  }
   
   public static class IntakeConstants {
     public static final int kIntakeMotor1 = 23;
