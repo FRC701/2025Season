@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -7,14 +8,15 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ElevatorLevelsCommand;
+import frc.robot.commands.EnableRollers;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Elevator;
+import frc.robot.commands.Outtake;
 import frc.robot.commands.ElevateCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.subsystems.Climber;
-import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -91,7 +93,9 @@ public class RobotContainer {
 
     //CODriver.a().whileTrue(new ClimbCommand(mClimber, 0.7));
     
-    Driver.rightBumper().onTrue(new IntakeCommand(m_intakeSubsytem));
+
+      CoDriver.rightBumper().onTrue(new EnableRollers());
+      CoDriver.leftBumper().onTrue(new Outtake());
     
     CoDriver.a().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdQuasistatic(Direction.kForward));
     CoDriver.b().and(CoDriver.rightBumper()).whileTrue(mElevator.sysIdQuasistatic(Direction.kReverse));
@@ -118,3 +122,4 @@ public class RobotContainer {
     return Autos.exampleAuto(m_exampleSubsystem);
   }
 }
+

@@ -4,76 +4,87 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.Constants;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import com.ctre.phoenix6.hardware.TalonFX;
+
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  /** Creates a new Intake. */
-
-  private TalonFX intakeMotor1;
-  private TalonFX intakeMotor2;
-  public static boolean kIntakeMotor_current;
-  public static IntakeEnumState mIntakeEnumState;
-
-  public enum IntakeEnumState {
-    S_Empty, S_Loaded, S_IntakeEject
-  }
-
-  public Intake() {
-    intakeMotor1 = new TalonFX(Constants.IntakeConstants.kIntakeMotor1);
-    intakeMotor2 = new TalonFX(Constants.IntakeConstants.kIntakeMotor2);
-    mIntakeEnumState = IntakeEnumState.S_Empty;
-  }
- 
+  private TalonFX m_IntakeMotor;
+  public static boolean enableRollers;
+  public static Timer outtakeTimer;
   
+  public static IntakeState intakeState;
 
-  public void runIntakeState() {
-    switch(mIntakeEnumState) {
-      case S_Empty:
-        Empty();
-        break;
-      case S_Loaded:
-        Loaded();
-        break;
-      case S_IntakeEject:
-        IntakeEject();
-        break;
+  /** Creates a new Intake. */
+  public Intake() {
+    enableRollers = false;
+    intakeState = IntakeState.S_Stopped;
+    m_IntakeMotor = new TalonFX(Constants.IntakeConstants.kIntakeMotor1);
+    outtakeTimer = new Timer();
+  }
+
+  public enum IntakeState {
+   S_Stopped, S_Rolling, S_Outtake
+    }
+
+  public void RunIntakeStates(){
+    switch (intakeState){
+      case S_Stopped:
+      Stopped();
+      break;
+      case S_Rolling:
+      Rolling();
+      break;
+      case S_Outtake:
+      Outtake();
+      break;
     }
   }
 
-  public void Empty() {
-    if (!hasCoral()) {
-    intakeMotor1.setVoltage(1);
-    intakeMotor2.setVoltage(1);
-      if(hasCoral()) {
-        Intake.mIntakeEnumState = IntakeEnumState.S_Loaded;
+  public void Stopped(){
+    enableRollers = false;
+    m_IntakeMotor.setVoltage(0);
+  }
+
+  public void Rolling(){
+    m_IntakeMotor.setVoltage(-1);
+    if(HasCoral()){
+      intakeState = IntakeState.S_Stopped;
+    }
+  }
+
+  public void Outtake(){
+    m_IntakeMotor.setVoltage(4);
+    outtakeTimer.start();
+    if(outtakeTimer.hasElapsed(0.5)){
+      intakeState = IntakeState.S_Stopped;
+      outtakeTimer.stop();
+      outtakeTimer.reset();
+    }
+  }
+
+    public boolean HasCoral() {
+      if (m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 10.0 ) {
+        return true;
+      } 
+      else {
+        return false;
       }
-    }else{
-      intakeMotor1.setVoltage(0);
-      intakeMotor2.setVoltage(0);
     }
-  }
 
-  public void Loaded() {
-    intakeMotor1.setVoltage(0);
-    intakeMotor2.setVoltage(0);
-  }
 
-  public void IntakeEject() {
-    intakeMotor1.setVoltage(4);
-    intakeMotor2.setVoltage(4);
-
-    Intake.mIntakeEnumState = IntakeEnumState.S_Empty;
-  }
-
-  public boolean hasCoral() {
-    return true;
-  }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    RunIntakeStates();
+    SmartDashboard.putNumber("IntakeStatorCurrent", m_IntakeMotor.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putBoolean("HasCoral", HasCoral());
+    SmartDashboard.putBoolean("rollersenabled", enableRollers);
+
+    SmartDashboard.putString("getState", intakeState.toString());
   }
 }

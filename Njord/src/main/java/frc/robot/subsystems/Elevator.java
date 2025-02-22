@@ -40,10 +40,13 @@ public class Elevator extends SubsystemBase {
 
 
   public Elevator() {
+
     m_elevatorMotor = new TalonFX(Constants.ElevatorConstants.kElevatorMotor,"cani");
     m_elevatorMotorf = new TalonFX(Constants.ElevatorConstants.kElevatorMotor2, "cani");
 
     var fx_cfg = new MotorOutputConfigs();
+
+    mTalonFXConfig = new TalonFXConfiguration().withVoltage(new VoltageConfigs().withPeakForwardVoltage(1).withPeakReverseVoltage(-1));
 
     fx_cfg.NeutralMode = NeutralModeValue.Brake;
   
@@ -65,6 +68,7 @@ public class Elevator extends SubsystemBase {
     Slot0Configs.kD = 0;
 
     m_elevatorMotor.getConfigurator().apply(Slot0Configs, 0.05);
+
 
      m_elevatorMotorf.setControl(new Follower(Constants.ElevatorConstants.kElevatorMotor, true));
   }
@@ -90,6 +94,7 @@ public class Elevator extends SubsystemBase {
     
   public enum ElevatorState {
     S_Reset,S_L1, S_L2, S_L3, S_L4
+
   }
 
   public double rotationsToInches(double angle){
@@ -117,9 +122,19 @@ public class Elevator extends SubsystemBase {
     m_elevatorMotor.setVoltage(0);
   }
 
+
+  public void SpinPositive(){
+    m_elevatorMotor.setVoltage(1);
+  }
+
+  public void SpinNegative(){
+    m_elevatorMotor.setVoltage(-1);
+  }
+
   public boolean atBottom(){
     return m_elevatorMotor.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
   }
+
 
   @Override
   public void periodic() {
