@@ -168,6 +168,18 @@ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
     }
   }
 
+  public void spinMotorNeg(){
+    elevatorLeft.setVoltage(-4);
+  }
+
+  public void spinMotorPos(){
+    elevatorLeft.setVoltage(4);
+  }
+
+  public void stop(){
+    elevatorLeft.setVoltage(0);
+  }
+
   private boolean getLimitState(){
     return MagLimit.get();
   }
