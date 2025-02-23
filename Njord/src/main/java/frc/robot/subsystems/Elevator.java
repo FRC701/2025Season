@@ -77,7 +77,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public enum ElevatorState {
-    S_Reset,S_L1, S_L2, S_L3, S_L4
+    S_Reset,S_L1, S_L2, S_L3, S_L4, S_PickUp
 
   }
 
@@ -98,6 +98,8 @@ public class Elevator extends SubsystemBase {
       case S_L4:
       setPosition(27); //placeholder
       break;
+      case S_PickUp:
+      setPosition(15);
     }
   }
     
