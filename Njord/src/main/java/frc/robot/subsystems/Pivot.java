@@ -72,7 +72,7 @@ public class Pivot extends SubsystemBase {
         resetPosition();
         break;
       case S_L1:
-        setPosition(0);
+        setPosition(-4.2);
         break;
       case S_L2:
         setPosition(-2); // placeholder

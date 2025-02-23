@@ -95,8 +95,8 @@ public class RobotContainer {
     Driver.y().whileTrue(new ClimbCommand(m_climber, 7));
     Driver.a().whileTrue(new ClimbCommand(m_climber, -7));
 
-    Driver.rightBumper().onTrue(new EnableRollers());
-    Driver.leftBumper().onTrue(new Outtake());
+    Driver.x().whileTrue(new EnableRollers());
+    Driver.b().whileTrue(new Outtake());
 
     // Driver.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     // Driver.y().whileTrue(new RunPivot());

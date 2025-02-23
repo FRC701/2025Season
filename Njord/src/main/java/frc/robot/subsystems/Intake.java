@@ -23,7 +23,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     enableRollers = false;
     intakeState = IntakeState.S_Stopped;
-    m_IntakeMotor = new TalonFX(Constants.IntakeConstants.kIntakeMotor1);
+    m_IntakeMotor = new TalonFX(Constants.IntakeConstants.kIntakeMotor1, "cani");
     outtakeTimer = new Timer();
   }
 
@@ -68,7 +68,7 @@ public class Intake extends SubsystemBase {
   }
 
     public boolean HasCoral() {
-      if (m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 10.0 ) {
+      if (m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 12.0 ) {
         return true;
       } 
       else {

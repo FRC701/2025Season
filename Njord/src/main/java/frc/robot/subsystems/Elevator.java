@@ -87,7 +87,7 @@ public class Elevator extends SubsystemBase {
       resetPosition();
       break;
       case S_L1:
-      setPosition(0);
+      setPosition(2);
       break;
       case S_L2:
       setPosition(10); //placeholder
