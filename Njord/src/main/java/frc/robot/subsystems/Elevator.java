@@ -28,7 +28,7 @@ public class Elevator extends SubsystemBase {
   private final TalonFX m_elevatorMotor;
   private final TalonFX m_elevatorMotorf;
 
-  private final double GearRatio = 20/1;
+  private final double GearRatio = 9/1;
 
   private final double kSproketCircumfrence = 1.887829 * Math.PI;
 
@@ -41,12 +41,12 @@ public class Elevator extends SubsystemBase {
 
   public Elevator() {
 
+   mElevatorState = ElevatorState.S_Reset;
+
     m_elevatorMotor = new TalonFX(Constants.ElevatorConstants.kElevatorMotor,"cani");
     m_elevatorMotorf = new TalonFX(Constants.ElevatorConstants.kElevatorMotor2, "cani");
 
     var fx_cfg = new MotorOutputConfigs();
-
-    mTalonFXConfig = new TalonFXConfiguration().withVoltage(new VoltageConfigs().withPeakForwardVoltage(1).withPeakReverseVoltage(-1));
 
     fx_cfg.NeutralMode = NeutralModeValue.Brake;
   
@@ -57,12 +57,15 @@ public class Elevator extends SubsystemBase {
         .withPeakForwardVoltage(4)
         .withPeakReverseVoltage(-4));
 
+        m_elevatorMotor.getConfigurator().apply(mTalonFXConfig);
+        m_elevatorMotorf.getConfigurator().apply(mTalonFXConfig);
+
 
 
      var Slot0Configs = new Slot0Configs();
     Slot0Configs.GravityType = GravityTypeValue.Elevator_Static;
     Slot0Configs.kS = 0;
-    Slot0Configs.kG = 0;
+    Slot0Configs.kG = 0.3;
     Slot0Configs.kP = 1;
     Slot0Configs.kI = 0;
     Slot0Configs.kD = 0;
@@ -72,6 +75,12 @@ public class Elevator extends SubsystemBase {
 
      m_elevatorMotorf.setControl(new Follower(Constants.ElevatorConstants.kElevatorMotor, true));
   }
+
+  public enum ElevatorState {
+    S_Reset,S_L1, S_L2, S_L3, S_L4
+
+  }
+
   public void runElevatorState(){
     switch (mElevatorState){
       case S_Reset:
@@ -81,21 +90,17 @@ public class Elevator extends SubsystemBase {
       setPosition(0);
       break;
       case S_L2:
-      setPosition(2); //placeholder
+      setPosition(10); //placeholder
       break;
       case S_L3:
-      setPosition(4); //placeholder
+      setPosition(20); //placeholder
       break;
       case S_L4:
-      setPosition(6); //placeholder
+      setPosition(27); //placeholder
       break;
     }
   }
     
-  public enum ElevatorState {
-    S_Reset,S_L1, S_L2, S_L3, S_L4
-
-  }
 
   public double rotationsToInches(double angle){
     return angle * kSproketCircumfrence;
@@ -106,7 +111,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void resetPosition(){
-    m_elevatorMotor.setVoltage(-3); 
+    m_elevatorMotor.setVoltage(-1); 
     if(atBottom()){
       m_elevatorMotor.setPosition(0.0);
       stop();
@@ -135,14 +140,19 @@ public class Elevator extends SubsystemBase {
     return m_elevatorMotor.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
   }
 
+  public double inchesToRotations(double Height){
+    return (Height *GearRatio)/ kSproketCircumfrence ;
+  }
+
 
   @Override
   public void periodic() {
-    runElevatorState();
+   runElevatorState();
+    SmartDashboard.putString("ElevatorState", mElevatorState.toString());
     SmartDashboard.putNumber("getRaw", m_elevatorMotor.getRotorPosition().getValueAsDouble());
 
     SmartDashboard.putNumber("isConfig", m_elevatorMotor.getDeviceID());
-    setPosition(SmartDashboard.getNumber("DesiredHeight", 0));
+    // setPosition(inchesToRotations(SmartDashboard.getNumber("DesiredHeight", 0)));
     SmartDashboard.putNumber("Height", getPosition());
     // This method will be called once per scheduler run
   }

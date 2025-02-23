@@ -35,8 +35,8 @@ public class RobotContainer {
 
   private final Elevator m_elevator = new Elevator();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final Climber mClimber = new Climber();
-  private final Intake m_intakeSubsytem = new Intake();
+  //private final Climber mClimber = new Climber();
+  //private final Intake m_intakeSubsytem = new Intake();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController Driver =

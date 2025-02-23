@@ -80,7 +80,9 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    
     RunIntakeStates();
+    SmartDashboard.putString("IntakeState", intakeState.toString());
     SmartDashboard.putNumber("IntakeStatorCurrent", m_IntakeMotor.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putBoolean("HasCoral", HasCoral());
     SmartDashboard.putBoolean("rollersenabled", enableRollers);

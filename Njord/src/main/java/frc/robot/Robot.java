@@ -27,7 +27,7 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
-    mElevator.resetPosition();
+    // mElevator.resetPosition();
     SmartDashboard.putNumber("DesiredHeight", 0);
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
