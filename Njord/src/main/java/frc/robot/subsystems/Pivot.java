@@ -22,47 +22,36 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-
 public class Pivot extends SubsystemBase {
   /** Creates a new Elevator. */
   private final TalonFX m_PivotMotor;
 
-  private final double GearRatio = 9/1;
-
-  private final double kSproketCircumfrence = 1.887829 * Math.PI;
-
-  private final double kFloorToCarriage = 19.876;
-
   private TalonFXConfiguration mTalonFXConfig;
 
-  public static ElevatorState mElevatorState;
+  public static PivotState pivotState;
 
   public Pivot() {
-    m_PivotMotor = new TalonFX(Constants.PivotConstants.kPivotMotor, "cani");
 
+    pivotState = PivotState.S_Reset;
+
+    m_PivotMotor = new TalonFX(Constants.PivotConstants.kPivotMotor, "cani");
 
     var fx_cfg = new MotorOutputConfigs();
 
     fx_cfg.NeutralMode = NeutralModeValue.Brake;
 
     mTalonFXConfig = new TalonFXConfiguration().withVoltage(new VoltageConfigs()
-    .withPeakForwardVoltage(1)
-    .withPeakReverseVoltage(-1));
-  
+        .withPeakForwardVoltage(1)
+        .withPeakReverseVoltage(-1));
+
     m_PivotMotor.getConfigurator().apply(fx_cfg);
 
-        mTalonFXConfig = new TalonFXConfiguration().withVoltage(new VoltageConfigs()
-        .withPeakForwardVoltage(4)
-        .withPeakReverseVoltage(-4));
+    m_PivotMotor.getConfigurator().apply(mTalonFXConfig);
 
-        m_PivotMotor.getConfigurator().apply(mTalonFXConfig);
-
-
-
-     var Slot0Configs = new Slot0Configs();
+    var Slot0Configs = new Slot0Configs();
     Slot0Configs.GravityType = GravityTypeValue.Elevator_Static;
     Slot0Configs.kS = 0;
-    Slot0Configs.kG = 0.3;
+    Slot0Configs.kG = 0;
     Slot0Configs.kP = 1;
     Slot0Configs.kI = 0;
     Slot0Configs.kD = 0;
@@ -71,71 +60,62 @@ public class Pivot extends SubsystemBase {
 
   }
 
-  public enum ElevatorState {
-    S_Reset,S_L1, S_L2, S_L3, S_L4
+  public enum PivotState {
+    S_Reset, S_L1, S_L2, S_L3, S_L4, S_PickUp
 
   }
 
-  public void runElevatorState(){
-    switch (mElevatorState){
+  public void runElevatorState() {
+    switch (pivotState) {
       case S_Reset:
-      resetPosition();
-      break;
+        resetPosition();
+        break;
       case S_L1:
-      setPosition(0);
-      break;
+        setPosition(0);
+        break;
       case S_L2:
-      setPosition(10); //placeholder
-      break;
+        setPosition(10); // placeholder
+        break;
       case S_L3:
-      setPosition(20); //placeholder
-      break;
+        setPosition(20); // placeholder
+        break;
       case S_L4:
-      setPosition(27); //placeholder
-      break;
+        setPosition(27); // placeholder
+        break;
+      case S_PickUp:
+        setPosition(0);
+        break;
     }
   }
-    
 
-  public double rotationsToInches(double angle){
-    return angle * kSproketCircumfrence;
+  public void resetPosition() {
+    m_PivotMotor.setVoltage(-1);
+    if (atBottom()) {
+      m_PivotMotor.setPosition(0.0);
+      stop();
+    }
   }
 
-  public double getPosition(){
-    return rotationsToInches(m_PivotMotor.getPosition().getValueAsDouble() / GearRatio );
-  }
-
-  public void resetPosition(){
-    m_PivotMotor.setPosition(0);
-    
-  }
-
-  public void setPosition(double position){
+  public void setPosition(double position) {
     PositionVoltage pos = new PositionVoltage(position).withSlot(0);
     m_PivotMotor.setControl(pos);
   }
 
-  public void stop(){
+  public void stop() {
     m_PivotMotor.setVoltage(0);
   }
 
+  public boolean atBottom() {
+    return m_PivotMotor.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
+  }
 
-  public void SpinPositive(){
+  public void SpinPositive() {
     m_PivotMotor.setVoltage(1);
   }
 
-  public void SpinNegative(){
+  public void SpinNegative() {
     m_PivotMotor.setVoltage(-1);
   }
-
-  // public boolean atBottom(){
-  //   return m_elevatorMotor.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
-  // }
-
-  public double inchesToRotations(double Height){
-    return (Height *GearRatio)/ kSproketCircumfrence ;
-  }
-
 
   @Override
   public void periodic() {
@@ -143,7 +123,6 @@ public class Pivot extends SubsystemBase {
 
     SmartDashboard.putNumber("isConfigPivot", m_PivotMotor.getDeviceID());
     // setPosition(SmartDashboard.getNumber("DesiredPivot", 0));
-    SmartDashboard.putNumber("HeightPivot", getPosition());
     // This method will be called once per scheduler run
   }
 }
