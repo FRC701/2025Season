@@ -12,6 +12,7 @@ import frc.robot.commands.EnableRollers;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.Outtake;
+import frc.robot.commands.PivotLevelsCommand;
 import frc.robot.commands.ReversePivot;
 import frc.robot.commands.RunPivot;
 import frc.robot.subsystems.Pivot;
@@ -92,9 +93,15 @@ public class RobotContainer {
 
 
 
-    Driver.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    Driver.y().whileTrue(new RunPivot());
-    Driver.a().whileTrue(new ReversePivot());
+    // Driver.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    // Driver.y().whileTrue(new RunPivot());
+    // Driver.a().whileTrue(new ReversePivot());
+
+    
+    Driver.x().onTrue(new PivotLevelsCommand(1));
+    Driver.a().onTrue(new PivotLevelsCommand(2));
+    Driver.y().onTrue(new PivotLevelsCommand(3));
+    Driver.b().onTrue(new PivotLevelsCommand(4));
   }
 
   

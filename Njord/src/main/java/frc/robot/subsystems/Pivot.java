@@ -33,6 +33,7 @@ public class Pivot extends SubsystemBase {
   public Pivot() {
 
     pivotState = PivotState.S_Reset;
+    
 
     m_PivotMotor = new TalonFX(Constants.PivotConstants.kPivotMotor, "cani");
 
@@ -49,7 +50,7 @@ public class Pivot extends SubsystemBase {
     m_PivotMotor.getConfigurator().apply(mTalonFXConfig);
 
     var Slot0Configs = new Slot0Configs();
-    Slot0Configs.GravityType = GravityTypeValue.Elevator_Static;
+    Slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
     Slot0Configs.kS = 0;
     Slot0Configs.kG = 0;
     Slot0Configs.kP = 1;
@@ -65,7 +66,7 @@ public class Pivot extends SubsystemBase {
 
   }
 
-  public void runElevatorState() {
+  public void runPivotState() {
     switch (pivotState) {
       case S_Reset:
         resetPosition();
@@ -74,23 +75,23 @@ public class Pivot extends SubsystemBase {
         setPosition(0);
         break;
       case S_L2:
-        setPosition(10); // placeholder
+        setPosition(-2); // placeholder
         break;
       case S_L3:
-        setPosition(20); // placeholder
+        setPosition(-3.5); // placeholder
         break;
       case S_L4:
-        setPosition(27); // placeholder
+        setPosition(-5); // placeholder
         break;
       case S_PickUp:
-        setPosition(0);
+        setPosition(-6.5);
         break;
     }
   }
 
   public void resetPosition() {
-    m_PivotMotor.setVoltage(-1);
-    if (atBottom()) {
+    // m_PivotMotor.setVoltage(1);
+    if (!atBottom()) {
       m_PivotMotor.setPosition(0.0);
       stop();
     }
@@ -119,6 +120,8 @@ public class Pivot extends SubsystemBase {
 
   @Override
   public void periodic() {
+    runPivotState();
+    SmartDashboard.putString("PivotState", pivotState.toString());
     SmartDashboard.putNumber("getRawPivot", m_PivotMotor.getRotorPosition().getValueAsDouble());
 
     SmartDashboard.putNumber("isConfigPivot", m_PivotMotor.getDeviceID());

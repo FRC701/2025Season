@@ -17,7 +17,7 @@ public final class Constants {
   public static final String kCarnivoreName = "Cani";
   
   public static class IntakeConstants {
-    public static final int kIntakeMotor1 = 23;
+    public static final int kIntakeMotor1 = 28;
   }
 
   public static class OperatorConstants {
@@ -26,7 +26,7 @@ public final class Constants {
   }
 
   public static class PivotConstants{
-    public static final int kPivotMotor = 28;
+    public static final int kPivotMotor = 23;
   }
   public static class ClimberConstants {
   public static final int kClimbLeft = 0;
