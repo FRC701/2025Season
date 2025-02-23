@@ -12,6 +12,9 @@ import frc.robot.commands.EnableRollers;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.Outtake;
+import frc.robot.commands.ReversePivot;
+import frc.robot.commands.RunPivot;
+import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.subsystems.Climber;
@@ -34,6 +37,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private final Elevator m_elevator = new Elevator();
+  private final Pivot m_pivot = new Pivot();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   //private final Climber mClimber = new Climber();
   //private final Intake m_intakeSubsytem = new Intake();
@@ -88,6 +92,9 @@ public class RobotContainer {
 
 
 
+    Driver.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    Driver.y().whileTrue(new RunPivot());
+    Driver.a().whileTrue(new ReversePivot());
   }
 
   
