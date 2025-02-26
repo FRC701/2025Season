@@ -11,12 +11,13 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.Pivot.PivotState;
 
 public class Intake extends SubsystemBase {
   private TalonFX m_IntakeMotor;
   public static boolean enableRollers;
   public static Timer outtakeTimer;
-  
+ 
   public static IntakeState intakeState;
 
   /** Creates a new Intake. */
@@ -54,6 +55,7 @@ public class Intake extends SubsystemBase {
     m_IntakeMotor.setVoltage(-1);
     if(HasCoral()){
       intakeState = IntakeState.S_Stopped;
+      Pivot.pivotState = PivotState.S_L1;
     }
   }
 
