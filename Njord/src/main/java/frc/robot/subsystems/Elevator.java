@@ -73,7 +73,7 @@ public class Elevator extends SubsystemBase {
     m_elevatorMotor.getConfigurator().apply(Slot0Configs, 0.05);
 
 
-     m_elevatorMotorf.setControl(new Follower(Constants.ElevatorConstants.kElevatorMotor, true));
+     m_elevatorMotorf.setControl(new Follower(Constants.ElevatorConstants.kElevatorMotor, false));
   }
 
   public enum ElevatorState {

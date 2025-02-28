@@ -29,7 +29,7 @@ public class ClimbCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mClimber.ClimbMotorL.set(speed);
+    mClimber.ClimbMotorL.setVoltage(speed);
   }
 
   // Called once the command ends or is interrupted.
