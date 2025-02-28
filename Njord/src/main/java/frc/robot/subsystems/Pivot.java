@@ -20,7 +20,7 @@ import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.PivotConstants;
 
 public class Pivot extends SubsystemBase {
   /** Creates a new Elevator. */
@@ -35,7 +35,7 @@ public class Pivot extends SubsystemBase {
     pivotState = PivotState.S_Reset;
     
 
-    m_PivotMotor = new TalonFX(Constants.PivotConstants.kPivotMotor, "cani");
+    m_PivotMotor = new TalonFX(PivotConstants.kPivotMotor, "cani");
 
     var fx_cfg = new MotorOutputConfigs();
 
@@ -72,19 +72,19 @@ public class Pivot extends SubsystemBase {
         resetPosition();
         break;
       case S_L1:
-        setPosition(-4.2);
+        setPosition(PivotConstants.kLevel1Angle);
         break;
       case S_L2:
-        setPosition(-2); // placeholder
+        setPosition(PivotConstants.kLevel2Angle); // placeholder
         break;
       case S_L3:
-        setPosition(-3.5); // placeholder
+        setPosition(PivotConstants.kLevel3Angle); // placeholder
         break;
       case S_L4:
-        setPosition(-5); // placeholder
+        setPosition(PivotConstants.kLevel4Angle); // placeholder
         break;
       case S_PickUp:
-        setPosition(-6.5);
+        setPosition(PivotConstants.kLevel5Angle);
         break;
     }
   }

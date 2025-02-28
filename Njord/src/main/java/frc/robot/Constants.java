@@ -27,6 +27,11 @@ public final class Constants {
 
   public static class PivotConstants{
     public static final int kPivotMotor = 23;
+    public static final double kLevel1Angle = -4.2;
+    public static final double kLevel2Angle = -2;//placeholder
+    public static final double kLevel3Angle = -3.5;//placeholder
+    public static final double kLevel4Angle = -5;//placeholder
+    public static final double kLevel5Angle = -6.5;
   }
   public static class ClimberConstants {
   public static final int kClimbLeft = 0;
@@ -35,5 +40,11 @@ public final class Constants {
   public static class ElevatorConstants {
     public static final int kElevatorMotor = 4;
     public static final int kElevatorMotor2 = 2;
+
+    public static final double kLevel1Height = 2;
+    public static final double kLevel2Height = 10; //placeholder
+    public static final double kLevel3Height = 20; //placeholder
+    public static final double kLevel4Height = 27; //placeholder
+    public static final double kLevel5Height = 15;
   }
 }
