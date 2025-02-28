@@ -18,8 +18,8 @@ public class Climber extends SubsystemBase {
 
   /** Creates a new Climb. */
   public Climber() {
-    ClimbMotorL = new TalonFX(Constants.ClimberConstants.kClimbLeft);
-    ClimbMotorR = new TalonFX(Constants.ClimberConstants.kClimbRight);
+    ClimbMotorL = new TalonFX(Constants.ClimberConstants.kClimbLeft, "cani");
+    ClimbMotorR = new TalonFX(Constants.ClimberConstants.kClimbRight, "cani");
     
     ClimbMotorR.setControl(new Follower(Constants.ClimberConstants.kClimbLeft,
      true));
