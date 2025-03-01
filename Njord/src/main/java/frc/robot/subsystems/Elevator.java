@@ -100,6 +100,7 @@ public class Elevator extends SubsystemBase {
       break;
       case S_PickUp:
       setPosition(15);
+      break;
     }
   }
     
@@ -112,11 +113,13 @@ public class Elevator extends SubsystemBase {
     return rotationsToInches(m_elevatorMotor.getPosition().getValueAsDouble() / GearRatio );
   }
 
-  public void resetPosition(){
-    m_elevatorMotor.setVoltage(-1); 
+  public void resetPosition(){ 
     if(atBottom()){
       m_elevatorMotor.setPosition(0.0);
       stop();
+    }
+    else {
+      m_elevatorMotor.setVoltage(-1);
     }
   }
 
