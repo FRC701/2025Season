@@ -52,10 +52,11 @@ public class Intake extends SubsystemBase {
   }
 
   public void Rolling(){
-    m_IntakeMotor.setVoltage(-1);
     if(HasCoral()){
       intakeState = IntakeState.S_Stopped;
       Pivot.pivotState = PivotState.S_L1;
+    } else{
+      m_IntakeMotor.setVoltage(-1);
     }
   }
 
@@ -70,12 +71,7 @@ public class Intake extends SubsystemBase {
   }
 
     public boolean HasCoral() {
-      if (m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 12.0 ) {
-        return true;
-      } 
-      else {
-        return false;
-      }
+      return m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 12.0;
     }
 
 
