@@ -148,6 +148,10 @@ public class Elevator extends SubsystemBase {
     return (Height *GearRatio)/ kSproketCircumfrence ;
   }
 
+  public boolean SetpointReached(double Setpoint){
+   return (getPosition() + 1 <= Setpoint) && (getPosition() - 1 >=Setpoint); 
+  }
+
 
   @Override
   public void periodic() {

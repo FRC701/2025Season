@@ -118,6 +118,10 @@ public class Pivot extends SubsystemBase {
     m_PivotMotor.setVoltage(-1);
   }
 
+  public boolean SetPointMet(double angle){
+    return (m_PivotMotor.getPosition().getValueAsDouble() + 0.1 <= angle) && (m_PivotMotor.getPosition().getValueAsDouble() - 0.1 >= angle);
+  }
+
   @Override
   public void periodic() {
     runPivotState();
