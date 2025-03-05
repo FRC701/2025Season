@@ -17,8 +17,10 @@ public class AutonomousSequencing extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       //Auto Drive
+      new PivotLevelsCommand(0),
+      new PivotCheck(0),
       new ElevatorLevelsCommand(0),
-      new PrepAndShoot(0, 0),
+      new ElevatorCheck(0),
       new EnableRollers()
     );
   }

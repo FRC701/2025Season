@@ -38,6 +38,13 @@ public class Elevator extends SubsystemBase {
 
   public static ElevatorState mElevatorState;
 
+  public static double[] ElevatorArray = {
+    ElevatorConstants.kLevel1Height,
+    ElevatorConstants.kLevel2Height,
+    ElevatorConstants.kLevel3Height,
+    ElevatorConstants.kLevel4Height,
+    ElevatorConstants.kLevel5Height
+  };
 
   public Elevator() {
 

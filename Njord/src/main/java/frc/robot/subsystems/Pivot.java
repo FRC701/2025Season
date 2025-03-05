@@ -30,6 +30,14 @@ public class Pivot extends SubsystemBase {
 
   public static PivotState pivotState;
 
+  public static double[] PivotArray = {
+    PivotConstants.kLevel1Angle,
+    PivotConstants.kLevel2Angle, 
+    PivotConstants.kLevel3Angle, 
+    PivotConstants.kLevel4Angle, 
+    PivotConstants.kLevel5Angle
+  };
+
   public Pivot() {
 
     pivotState = PivotState.S_Reset;
