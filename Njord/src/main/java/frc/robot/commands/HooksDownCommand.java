@@ -28,7 +28,7 @@ public class HooksDownCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mClimber.ClimbMotorL.setVoltage(speed);
+    Climber.mClimberstate = climberState.S_HooksDown;
   }
 
   // Called once the command ends or is interrupted.
