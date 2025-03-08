@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.ControlRequest;
@@ -38,6 +39,8 @@ public class Pivot extends SubsystemBase {
     PivotConstants.kLevel5Angle
   };
 
+  private static final double FORWARD_LIMIT = 1234.;
+
   public Pivot() {
 
     pivotState = PivotState.S_Reset;
@@ -51,7 +54,11 @@ public class Pivot extends SubsystemBase {
 
     mTalonFXConfig = new TalonFXConfiguration().withVoltage(new VoltageConfigs()
         .withPeakForwardVoltage(1)
-        .withPeakReverseVoltage(-1));
+        .withPeakReverseVoltage(-1))
+        .withSoftwareLimitSwitch(
+            new SoftwareLimitSwitchConfigs()
+              .withForwardSoftLimitThreshold(FORWARD_LIMIT)
+              .withForwardSoftLimitEnable(true));
 
     m_PivotMotor.getConfigurator().apply(fx_cfg);
 

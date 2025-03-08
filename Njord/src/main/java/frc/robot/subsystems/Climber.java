@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 
 
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.Follower;
@@ -24,6 +25,8 @@ public class Climber extends SubsystemBase {
 
   private TalonFXConfiguration mTalonFXConfig;
 
+  private static final double FORWARD_LIMIT = 1234.;
+
   /** Creates a new Climb. */
   public Climber() {
     ClimbMotorL = new TalonFX(Constants.ClimberConstants.kClimbLeft, "cani");
@@ -34,7 +37,11 @@ public class Climber extends SubsystemBase {
 
     mTalonFXConfig = new TalonFXConfiguration().withVoltage((new VoltageConfigs()
     .withPeakForwardVoltage(7)
-    .withPeakReverseVoltage(-7)));
+    .withPeakReverseVoltage(-7)))
+    .withSoftwareLimitSwitch(
+      new SoftwareLimitSwitchConfigs()
+        .withForwardSoftLimitThreshold(FORWARD_LIMIT)
+        .withForwardSoftLimitEnable(true));
 
     ClimbMotorL.getConfigurator().apply(mTalonFXConfig);
     ClimbMotorR.getConfigurator().apply(mTalonFXConfig);
