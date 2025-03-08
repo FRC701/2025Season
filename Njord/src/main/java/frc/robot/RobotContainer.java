@@ -7,7 +7,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ElevatorLevelsCommand;
+import frc.robot.commands.ElevatorPivot;
 import frc.robot.commands.EnableRollers;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Elevator;
@@ -87,11 +87,11 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
 
-    CoDriver.x().onTrue(new ElevatorLevelsCommand(1));
-    CoDriver.a().onTrue(new ElevatorLevelsCommand(2));
-    CoDriver.y().onTrue(new ElevatorLevelsCommand(3));
-    CoDriver.b().onTrue(new ElevatorLevelsCommand(4));
-    CoDriver.leftBumper().onTrue(new ElevatorLevelsCommand(5));
+    CoDriver.x().onTrue(new ElevatorPivot(1));
+    CoDriver.a().onTrue(new ElevatorPivot(2));
+    CoDriver.y().onTrue(new ElevatorPivot(3));
+    CoDriver.b().onTrue(new ElevatorPivot(4));
+    CoDriver.leftBumper().onTrue(new ElevatorPivot(5));
 
     Driver.y().whileTrue(new HooksDownCommand(m_climber));
     Driver.a().whileTrue(new HooksUpCommand(m_climber));

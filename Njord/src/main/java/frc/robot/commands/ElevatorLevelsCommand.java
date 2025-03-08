@@ -26,27 +26,26 @@ public class ElevatorLevelsCommand extends InstantCommand {
     switch(level){
       case 1:
         Elevator.mElevatorState = ElevatorState.S_L1;
-                Pivot.pivotState = PivotState.S_L1;
+              
         break;
       case 2:
         Elevator.mElevatorState = ElevatorState.S_L2;
-        Pivot.pivotState = PivotState.S_L2;
+     
 
         break;
       case 3:
         Elevator.mElevatorState = ElevatorState.S_L3;
-        Pivot.pivotState = PivotState.S_L3;
+        
 
         break;
       case 4:
         Elevator.mElevatorState = ElevatorState.S_L4;
-        Pivot.pivotState = PivotState.S_L4;
+
 
         break;
         case 5:
         Elevator.mElevatorState = ElevatorState.S_PickUp;
 
-        Pivot.pivotState = PivotState.S_PickUp;
         break;
     }
   }

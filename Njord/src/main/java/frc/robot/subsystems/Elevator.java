@@ -20,7 +20,7 @@ import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.ElevatorConstants;
 
 
 public class Elevator extends SubsystemBase {
@@ -38,13 +38,20 @@ public class Elevator extends SubsystemBase {
 
   public static ElevatorState mElevatorState;
 
+  public static double[] ElevatorArray = {
+    ElevatorConstants.kLevel1Height,
+    ElevatorConstants.kLevel2Height,
+    ElevatorConstants.kLevel3Height,
+    ElevatorConstants.kLevel4Height,
+    ElevatorConstants.kLevel5Height
+  };
 
   public Elevator() {
 
    mElevatorState = ElevatorState.S_Reset;
 
-    m_elevatorMotor = new TalonFX(Constants.ElevatorConstants.kElevatorMotor,"cani");
-    m_elevatorMotorf = new TalonFX(Constants.ElevatorConstants.kElevatorMotor2, "cani");
+    m_elevatorMotor = new TalonFX(ElevatorConstants.kElevatorMotor,"cani");
+    m_elevatorMotorf = new TalonFX(ElevatorConstants.kElevatorMotor2, "cani");
 
     var fx_cfg = new MotorOutputConfigs();
 
@@ -73,7 +80,7 @@ public class Elevator extends SubsystemBase {
     m_elevatorMotor.getConfigurator().apply(Slot0Configs, 0.05);
 
 
-     m_elevatorMotorf.setControl(new Follower(Constants.ElevatorConstants.kElevatorMotor, true));
+     m_elevatorMotorf.setControl(new Follower(ElevatorConstants.kElevatorMotor, true));
   }
 
   public enum ElevatorState {
@@ -87,20 +94,19 @@ public class Elevator extends SubsystemBase {
       resetPosition();
       break;
       case S_L1:
-      setPosition(2);
+      setPosition(ElevatorConstants.kLevel1Height);
       break;
       case S_L2:
-      setPosition(10); //placeholder
+      setPosition(ElevatorConstants.kLevel2Height); //placeholder
       break;
       case S_L3:
-      setPosition(20); //placeholder
+      setPosition(ElevatorConstants.kLevel3Height); //placeholder
       break;
       case S_L4:
-      setPosition(27); //placeholder
+      setPosition(ElevatorConstants.kLevel4Height); //placeholder
       break;
       case S_PickUp:
-      setPosition(15);
-      break;
+      setPosition(ElevatorConstants.kLevel5Height);
     }
   }
     
@@ -147,6 +153,10 @@ public class Elevator extends SubsystemBase {
 
   public double inchesToRotations(double Height){
     return (Height *GearRatio)/ kSproketCircumfrence ;
+  }
+
+  public boolean SetpointReached(double Setpoint){
+   return (getPosition() + 1 <= Setpoint) && (getPosition() - 1 >=Setpoint); 
   }
 
 
