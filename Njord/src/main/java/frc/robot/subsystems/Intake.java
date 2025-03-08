@@ -71,7 +71,12 @@ public class Intake extends SubsystemBase {
   }
 
     public boolean HasCoral() {
-      return m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 12.0;
+      if (m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 15.0 ) {
+        return true;
+      } 
+      else {
+        return false;
+      }
     }
 
 

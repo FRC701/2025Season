@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.PivotConstants;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Pivot;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -28,10 +29,10 @@ private int Level;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands( 
-    new PivotLevelsCommand(level),
-    new PivotCheck(Pivot.PivotArray[level - 1]),
-    new ElevatorLevelsCommand(level),
-    new ElevatorCheck(Pivot.PivotArray[level - 1])
+    new PivotLevelsCommand(Level),
+    new PivotCheck(Pivot.PivotArray[Level - 1]),
+    new ElevatorLevelsCommand(Level),
+    new ElevatorCheck(Elevator.ElevatorArray[Level - 1])
     );
    
   }
