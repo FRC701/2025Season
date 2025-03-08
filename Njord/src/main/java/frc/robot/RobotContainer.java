@@ -17,7 +17,8 @@ import frc.robot.commands.ReversePivot;
 import frc.robot.commands.RunPivot;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.HooksDownCommand;
+import frc.robot.commands.HooksUpCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -92,8 +93,8 @@ public class RobotContainer {
     CoDriver.b().onTrue(new ElevatorLevelsCommand(4));
     CoDriver.leftBumper().onTrue(new ElevatorLevelsCommand(5));
 
-    Driver.y().whileTrue(new ClimbCommand(m_climber, 7));
-    Driver.a().whileTrue(new ClimbCommand(m_climber, -7));
+    Driver.y().whileTrue(new HooksDownCommand(m_climber));
+    Driver.a().whileTrue(new HooksUpCommand(m_climber));
 
     Driver.x().whileTrue(new EnableRollers());
     Driver.b().whileTrue(new Outtake());
