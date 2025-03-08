@@ -105,7 +105,7 @@ public class Pivot extends SubsystemBase {
   }
 
   public void resetPosition() {
-    // m_PivotMotor.setVoltage(1);
+    m_PivotMotor.setVoltage(-1);
     if (!atBottom()) {
       m_PivotMotor.setPosition(0.0);
       stop();
