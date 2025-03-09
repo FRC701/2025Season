@@ -31,8 +31,7 @@ private int Level;
     addCommands( 
     new PivotLevelsCommand(Level),
     new PivotCheck(Pivot.PivotArray[Level - 1]),
-    new ElevatorLevelsCommand(Level),
-    new ElevatorCheck(Elevator.ElevatorArray[Level - 1])
+    new ElevatorLevelsCommand(Level)
     );
    
   }

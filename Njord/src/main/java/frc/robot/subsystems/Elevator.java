@@ -94,19 +94,19 @@ public class Elevator extends SubsystemBase {
       resetPosition();
       break;
       case S_L1:
-      setPosition(ElevatorConstants.kLevel1Height);
+      setPosition(inchesToRotations(ElevatorConstants.kLevel1Height));
       break;
       case S_L2:
-      setPosition(ElevatorConstants.kLevel2Height); //placeholder
+      setPosition(inchesToRotations(ElevatorConstants.kLevel2Height)); //placeholder
       break;
       case S_L3:
-      setPosition(ElevatorConstants.kLevel3Height); //placeholder
+      setPosition(inchesToRotations(ElevatorConstants.kLevel3Height)); //placeholder
       break;
       case S_L4:
-      setPosition(ElevatorConstants.kLevel4Height); //placeholder
+      setPosition(inchesToRotations(ElevatorConstants.kLevel4Height)); //placeholder
       break;
       case S_PickUp:
-      setPosition(ElevatorConstants.kLevel5Height);
+      setPosition(inchesToRotations(ElevatorConstants.kLevel5Height));
     }
   }
     

@@ -77,7 +77,7 @@ public class Pivot extends SubsystemBase {
   }
 
   public enum PivotState {
-    S_Reset, S_L1, S_L2, S_L3, S_L4, S_PickUp
+    S_Reset, S_HasCoral, S_Stop, S_L1, S_L2, S_L3, S_L4, S_PickUp
 
   }
 
@@ -85,6 +85,12 @@ public class Pivot extends SubsystemBase {
     switch (pivotState) {
       case S_Reset:
         resetPosition();
+        break;
+        case S_HasCoral:
+        setPosition(1);
+        break;
+      case S_Stop:
+        stop();
         break;
       case S_L1:
         setPosition(PivotConstants.kLevel1Angle);
@@ -105,10 +111,12 @@ public class Pivot extends SubsystemBase {
   }
 
   public void resetPosition() {
-    m_PivotMotor.setVoltage(-1);
-    if (!atBottom()) {
+    if (atBottom()) {
       m_PivotMotor.setPosition(0.0);
-      stop();
+      pivotState = PivotState.S_Stop;
+    }
+    else{
+      m_PivotMotor.setVoltage(-1);
     }
   }
 
@@ -134,7 +142,7 @@ public class Pivot extends SubsystemBase {
   }
 
   public boolean SetPointMet(double angle){
-    return (m_PivotMotor.getPosition().getValueAsDouble() + 0.1 <= angle) && (m_PivotMotor.getPosition().getValueAsDouble() - 0.1 >= angle);
+    return (m_PivotMotor.getPosition().getValueAsDouble() - 0.2 <= angle) && (m_PivotMotor.getPosition().getValueAsDouble() + 0.2 >= angle);
   }
 
   @Override
@@ -142,7 +150,7 @@ public class Pivot extends SubsystemBase {
     runPivotState();
     SmartDashboard.putString("PivotState", pivotState.toString());
     SmartDashboard.putNumber("getRawPivot", m_PivotMotor.getRotorPosition().getValueAsDouble());
-
+    SmartDashboard.putBoolean("PivotSetpointMet", SetPointMet(4.4));
     SmartDashboard.putNumber("isConfigPivot", m_PivotMotor.getDeviceID());
     // setPosition(SmartDashboard.getNumber("DesiredPivot", 0));
     // This method will be called once per scheduler run

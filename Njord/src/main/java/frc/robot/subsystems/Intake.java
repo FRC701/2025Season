@@ -5,8 +5,15 @@
 package frc.robot.subsystems;
 
 
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.VoltageConfigs;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,8 +24,9 @@ public class Intake extends SubsystemBase {
   private TalonFX m_IntakeMotor;
   public static boolean enableRollers;
   public static Timer outtakeTimer;
- 
+
   public static IntakeState intakeState;
+  private final TalonFXConfiguration mTalonFXConfig;
 
   /** Creates a new Intake. */
   public Intake() {
@@ -26,6 +34,14 @@ public class Intake extends SubsystemBase {
     intakeState = IntakeState.S_Stopped;
     m_IntakeMotor = new TalonFX(Constants.IntakeConstants.kIntakeMotor1, "cani");
     outtakeTimer = new Timer();
+    var Brake = new MotorOutputConfigs();
+
+    Brake.NeutralMode = NeutralModeValue.Brake;
+    
+    mTalonFXConfig = new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs()
+    .withDutyCycleNeutralDeadband(0));
+    m_IntakeMotor.getConfigurator().apply(Brake);
+    m_IntakeMotor.getConfigurator().apply(mTalonFXConfig);
   }
 
   public enum IntakeState {
@@ -48,13 +64,14 @@ public class Intake extends SubsystemBase {
 
   public void Stopped(){
     enableRollers = false;
-    m_IntakeMotor.setVoltage(0);
+    DutyCycleOut speed = new DutyCycleOut(-0.042);
+    m_IntakeMotor.setControl(speed);
   }
 
   public void Rolling(){
     if(HasCoral()){
       intakeState = IntakeState.S_Stopped;
-      Pivot.pivotState = PivotState.S_L1;
+      Pivot.pivotState =PivotState.S_HasCoral;
     } else{
       m_IntakeMotor.setVoltage(-1);
     }
@@ -71,7 +88,7 @@ public class Intake extends SubsystemBase {
   }
 
     public boolean HasCoral() {
-      if (m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 15.0 ) {
+      if (m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 25.0 ) {
         return true;
       } 
       else {

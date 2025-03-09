@@ -35,6 +35,8 @@ public class Climber extends SubsystemBase {
     ClimbMotorR.setControl(new Follower(Constants.ClimberConstants.kClimbLeft,
      true));
 
+     mClimberstate = climberState.S_Stopped;
+
     mTalonFXConfig = new TalonFXConfiguration().withVoltage((new VoltageConfigs()
     .withPeakForwardVoltage(7)
     .withPeakReverseVoltage(-7)))
