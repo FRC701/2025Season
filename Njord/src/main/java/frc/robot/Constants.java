@@ -46,8 +46,8 @@ public final class Constants {
     public static final double kLevel5Angle = 2.5;
   }
   public static class ClimberConstants {
-  public static final int kClimbLeft = 0;
-  public static final int kClimbRight = 1;
+  public static final int kClimbBottom = 0;
+  public static final int kClimbTop = 1;
   }
 
   public static class ElevatorConstants {

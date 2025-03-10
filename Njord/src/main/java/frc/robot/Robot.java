@@ -18,8 +18,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Climber.climberState;
 import frc.robot.subsystems.Elevator.ElevatorState;
 import frc.robot.subsystems.Pivot.PivotState;
 
@@ -131,6 +133,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
    Elevator.mElevatorState = ElevatorState.S_Reset;
    Pivot.pivotState = PivotState.S_Reset;
+  //  Climber.mClimberstate = climberState.S_Reset;
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

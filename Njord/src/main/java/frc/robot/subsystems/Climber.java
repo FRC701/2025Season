@@ -6,11 +6,14 @@ package frc.robot.subsystems;
 
 
 
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ForwardLimitValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,8 +21,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
-  private TalonFX ClimbMotorL;
-  private TalonFX ClimbMotorR;
+  private TalonFX ClimbMotorBottom;
+  private TalonFX ClimbMotorTop;
 
   public static climberState mClimberstate;
 
@@ -29,13 +32,21 @@ public class Climber extends SubsystemBase {
 
   /** Creates a new Climb. */
   public Climber() {
-    ClimbMotorL = new TalonFX(Constants.ClimberConstants.kClimbLeft, "cani");
-    ClimbMotorR = new TalonFX(Constants.ClimberConstants.kClimbRight, "cani");
+    ClimbMotorBottom = new TalonFX(Constants.ClimberConstants.kClimbBottom, "cani");
+    ClimbMotorTop = new TalonFX(Constants.ClimberConstants.kClimbTop, "cani");
     
-    ClimbMotorR.setControl(new Follower(Constants.ClimberConstants.kClimbLeft,
-     true));
+    ClimbMotorBottom.setControl(new Follower(Constants.ClimberConstants.kClimbTop,
+     false));
 
      mClimberstate = climberState.S_Stopped;
+
+     
+    var fx_cfg = new MotorOutputConfigs();
+
+    fx_cfg.NeutralMode = NeutralModeValue.Brake;
+  
+    ClimbMotorBottom.getConfigurator().apply(fx_cfg);
+    ClimbMotorTop.getConfigurator().apply(fx_cfg);
 
     mTalonFXConfig = new TalonFXConfiguration().withVoltage((new VoltageConfigs()
     .withPeakForwardVoltage(7)
@@ -45,8 +56,8 @@ public class Climber extends SubsystemBase {
         .withForwardSoftLimitThreshold(FORWARD_LIMIT)
         .withForwardSoftLimitEnable(true));
 
-    ClimbMotorL.getConfigurator().apply(mTalonFXConfig);
-    ClimbMotorR.getConfigurator().apply(mTalonFXConfig);
+    ClimbMotorBottom.getConfigurator().apply(mTalonFXConfig);
+    ClimbMotorTop.getConfigurator().apply(mTalonFXConfig);
 
   
   }
@@ -73,27 +84,32 @@ public class Climber extends SubsystemBase {
   }
 
 private void HooksUp(){
-ClimbMotorL.setVoltage(7);
+ClimbMotorTop.setVoltage(-6);
 }
 
 private void HooksDown(){
-ClimbMotorL.setVoltage(-7);
+ClimbMotorTop.setVoltage(6);
 }
 
 private void Stopped(){
-ClimbMotorL.setVoltage(0);
+ClimbMotorTop.stopMotor();
 }
 
 private void Reset(){
-if(!RevLimit()){
-  ClimbMotorL.setVoltage(-7);
+if(FwdLimit()){
+  ClimbMotorTop.setPosition(0);
+  mClimberstate = climberState.S_Stopped;
 } else{
-  ClimbMotorL.setVoltage(0);
+  ClimbMotorTop.setVoltage(-4);
 }
 }
 
-private boolean RevLimit(){
-  return ClimbMotorL.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
+private double GetPose(){
+  return ClimbMotorTop.getRotorPosition().getValueAsDouble();
+}
+
+private boolean FwdLimit(){
+  return ClimbMotorTop.getForwardLimit().getValue() == ForwardLimitValue.ClosedToGround;
 }
 
 
@@ -101,6 +117,8 @@ private boolean RevLimit(){
   public void periodic() {
     runClimberState();
     SmartDashboard.putString("ClimberState", mClimberstate.toString());
+    SmartDashboard.putNumber("ClimberPose", GetPose());
+    SmartDashboard.putBoolean("FWDLimit down", FwdLimit());
     // This method will be called once per scheduler run
   }
 }
