@@ -64,7 +64,7 @@ public class Intake extends SubsystemBase {
 
   public void Stopped(){
     enableRollers = false;
-    DutyCycleOut speed = new DutyCycleOut(-0.042);
+    DutyCycleOut speed = new DutyCycleOut(-0.05);
     m_IntakeMotor.setControl(speed);
   }
 
@@ -73,7 +73,7 @@ public class Intake extends SubsystemBase {
       intakeState = IntakeState.S_Stopped;
       Pivot.pivotState =PivotState.S_HasCoral;
     } else{
-      m_IntakeMotor.setVoltage(-1);
+      m_IntakeMotor.setVoltage(-1.5);
     }
   }
 
