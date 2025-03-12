@@ -47,27 +47,29 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
-     thredhaha =
-     new Thread (
-     () -> {
-     UsbCamera usbCam = CameraServer.startAutomaticCapture();
+  //    thredhaha =
+  //    new Thread (
+  //    () -> {
+  //    UsbCamera usbCam = CameraServer.startAutomaticCapture();
 
-     usbCam.setResolution(640, 480);   
+  //    usbCam.setResolution(640, 480);   
 
-     CvSink cvSin = CameraServer.getVideo();
+  //    CvSink cvSin = CameraServer.getVideo();
 
-     CvSource outputStrem = CameraServer.putVideo("Rectangle", 640, 480);
-    Mat mat = new Mat();
-   while (!Thread.interrupted()) {
-       if(cvSin.grabFrame(mat) == 0){
+  //    CvSource outputStrem = CameraServer.putVideo("Rectangle", 640, 480);
 
-         outputStrem.notifyError((cvSin.getError()));
-        continue;
-       }
+  //   Mat mat = new Mat();
+  //  while (!Thread.interrupted()) {
+  //      if(cvSin.grabFrame(mat) == 0){
+
+  //        outputStrem.notifyError((cvSin.getError()));
+  //       continue;
+  //      }
       
-     }
-     });
+  //    }
+  //    });
   
+  CameraServer.startAutomaticCapture();
 
      // mElevator.resetPosition();
     SmartDashboard.putNumber("DesiredHeight", 0);

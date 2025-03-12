@@ -129,7 +129,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-Driver.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-Driver.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-Driver.getRightX() * MaxAngularRate * 0.30) // Drive counterclockwise with negative X (left)
+                    .withRotationalRate(-Driver.getRightX() * MaxAngularRate * 0.75) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -150,6 +150,12 @@ public class RobotContainer {
         Driver.pov(270).whileTrue(drivetrain.applyRequest(() ->
             forwardStraight.withVelocityX(0.0).withVelocityY(0.25))
         );
+
+        Driver.rightTrigger().whileTrue(drivetrain.applyRequest(()-> 
+            drive.withRotationalRate(-MaxAngularRate * 0.15)));
+        Driver.leftTrigger().whileTrue(drivetrain.applyRequest(()-> 
+            drive.withRotationalRate(MaxAngularRate * 0.15)));
+        
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
