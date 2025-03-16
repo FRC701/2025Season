@@ -20,8 +20,8 @@ public class AutonomousSequencing extends SequentialCommandGroup {
       new PivotLevelsCommand(0),
       new PivotCheck(0),
       new ElevatorLevelsCommand(0),
-      new ElevatorCheck(0),
-      new EnableRollers()
+      new ElevatorCheck(0)
+
     );
   }
 }

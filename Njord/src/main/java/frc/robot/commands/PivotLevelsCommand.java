@@ -15,9 +15,11 @@ import frc.robot.subsystems.Pivot.PivotState;;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PivotLevelsCommand extends InstantCommand {
   int level = 0;
+  Pivot mPivot = new Pivot();
 
   public PivotLevelsCommand(int level) {
     this.level = level;
+    addRequirements(mPivot);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

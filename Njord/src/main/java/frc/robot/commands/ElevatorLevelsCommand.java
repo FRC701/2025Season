@@ -15,8 +15,10 @@ import frc.robot.subsystems.Pivot.PivotState;;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ElevatorLevelsCommand extends InstantCommand {
   int level = 0;
+  Elevator mElevator = new Elevator();
   public ElevatorLevelsCommand(int level) {
     this.level = level;
+    addRequirements(mElevator);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -45,8 +47,9 @@ public class ElevatorLevelsCommand extends InstantCommand {
         break;
         case 5:
         Elevator.mElevatorState = ElevatorState.S_PickUp;
-
         break;
+
+        
     }
   }
 }

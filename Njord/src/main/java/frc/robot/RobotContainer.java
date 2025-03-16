@@ -8,9 +8,11 @@ package frc.robot;
 import frc.robot.Telemetry;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.fasterxml.jackson.databind.util.Named;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AutonomousSequencing;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ElevatorPivot;
 import frc.robot.commands.EnableRollers;
@@ -37,6 +39,7 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 // import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveModule.DriveRequestType;
 // import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -78,7 +81,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-      //  private final SendableChooser<Command> autoChooser;
+       private final SendableChooser<Command> autoChooser;
   // The robot's subsystems and commands are defined here...
 
   private final Elevator m_elevator = new Elevator();
@@ -98,9 +101,12 @@ public class RobotContainer {
    */
   // Constructor
   public RobotContainer() {
+    
+    NamedCommands.registerCommand("Level4", new ElevatorPivot(4));
+    NamedCommands.registerCommand("Outtake", new Outtake());
 
-      //  autoChooser = AutoBuilder.buildAutoChooser("New Auto");
-      //   SmartDashboard.putData("Auto Mode", autoChooser);
+       autoChooser = AutoBuilder.buildAutoChooser("New Auto");
+        SmartDashboard.putData("Auto Mode", autoChooser);
     // Configure the trigger bindings
     configureBindings();
   }
@@ -197,6 +203,8 @@ public class RobotContainer {
     // Driver.a().onTrue(new PivotLevelsCommand(2));
     // Driver.y().onTrue(new PivotLevelsCommand(3));
     // Driver.b().onTrue(new PivotLevelsCommand(4));
+
+
   }
 
   /**
@@ -208,9 +216,9 @@ public class RobotContainer {
   // For Auto
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    // return Autos.exampleAuto(m_exampleSubsystem);
     /* Run the path selected from the auto chooser */
-    // return autoChooser.getSelected();
+    return autoChooser.getSelected();
 
   }
 }

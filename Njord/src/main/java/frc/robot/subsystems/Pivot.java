@@ -87,7 +87,8 @@ public class Pivot extends SubsystemBase {
         resetPosition();
         break;
         case S_HasCoral:
-        setPosition(1);
+        setPosition(0.2);
+
         break;
       case S_Stop:
         stop();

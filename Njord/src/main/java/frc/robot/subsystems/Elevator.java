@@ -156,7 +156,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean SetpointReached(double Setpoint){
-   return (getPosition() + 1 <= Setpoint) && (getPosition() - 1 >=Setpoint); 
+   return (getPosition() - 5 <= Setpoint) && (getPosition() + 5 >=Setpoint); 
   }
 
 

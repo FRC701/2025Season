@@ -42,7 +42,7 @@ public final class Constants {
     public static final double kLevel1Angle = 4.5; // SIX SEVEN
     public static final double kLevel2Angle = 4.5;//placeholder
     public static final double kLevel3Angle = 4.5;//placeholder
-    public static final double kLevel4Angle = 4.5;//placeholder
+    public static final double kLevel4Angle = 4.0;//placeholder
     public static final double kLevel5Angle = 2.5;
   }
   public static class ClimberConstants {

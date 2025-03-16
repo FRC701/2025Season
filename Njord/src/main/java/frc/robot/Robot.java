@@ -69,7 +69,8 @@ public class Robot extends TimedRobot {
   //    }
   //    });
   
-  CameraServer.startAutomaticCapture();
+  CameraServer.startAutomaticCapture(0);
+  CameraServer.startAutomaticCapture(1);
 
      // mElevator.resetPosition();
     SmartDashboard.putNumber("DesiredHeight", 0);
@@ -116,6 +117,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    Pivot.pivotState = PivotState.S_Reset;
+    Elevator.mElevatorState = ElevatorState.S_Reset;
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
