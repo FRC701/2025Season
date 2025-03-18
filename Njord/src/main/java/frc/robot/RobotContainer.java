@@ -145,16 +145,16 @@ public class RobotContainer {
         // ));
 
         Driver.pov(0).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(0.25).withVelocityY(0))
+            forwardStraight.withVelocityX(0.375).withVelocityY(0))
         );
         Driver.pov(180).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(-0.25).withVelocityY(0))
+            forwardStraight.withVelocityX(-0.375).withVelocityY(0))
         );
         Driver.pov(90).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(0.0).withVelocityY(-0.25))
+            forwardStraight.withVelocityX(0.0).withVelocityY(-0.375))
         );
         Driver.pov(270).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(0.0).withVelocityY(0.25))
+            forwardStraight.withVelocityX(0.0).withVelocityY(0.375))
         );
 
         Driver.rightTrigger().whileTrue(drivetrain.applyRequest(()-> 

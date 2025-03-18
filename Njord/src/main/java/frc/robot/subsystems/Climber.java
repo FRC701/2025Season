@@ -28,7 +28,7 @@ public class Climber extends SubsystemBase {
 
   private TalonFXConfiguration mTalonFXConfig;
 
-  private static final double FORWARD_LIMIT = 1234.;
+  private static final double REVERSE_LIMIT = -73;
 
   /** Creates a new Climb. */
   public Climber() {
@@ -38,7 +38,7 @@ public class Climber extends SubsystemBase {
     ClimbMotorBottom.setControl(new Follower(Constants.ClimberConstants.kClimbTop,
      false));
 
-     mClimberstate = climberState.S_Stopped;
+     mClimberstate = climberState.S_Reset;
 
      
     var fx_cfg = new MotorOutputConfigs();
@@ -49,12 +49,12 @@ public class Climber extends SubsystemBase {
     ClimbMotorTop.getConfigurator().apply(fx_cfg);
 
     mTalonFXConfig = new TalonFXConfiguration().withVoltage((new VoltageConfigs()
-    .withPeakForwardVoltage(7)
-    .withPeakReverseVoltage(-7)))
+    .withPeakForwardVoltage(12)
+    .withPeakReverseVoltage(-12)))
     .withSoftwareLimitSwitch(
       new SoftwareLimitSwitchConfigs()
-        .withForwardSoftLimitThreshold(FORWARD_LIMIT)
-        .withForwardSoftLimitEnable(true));
+        .withReverseSoftLimitThreshold(REVERSE_LIMIT)
+        .withReverseSoftLimitEnable(true));
 
     ClimbMotorBottom.getConfigurator().apply(mTalonFXConfig);
     ClimbMotorTop.getConfigurator().apply(mTalonFXConfig);
@@ -84,11 +84,11 @@ public class Climber extends SubsystemBase {
   }
 
 private void HooksUp(){
-ClimbMotorTop.setVoltage(-6);
+ClimbMotorTop.setVoltage(-12);
 }
 
 private void HooksDown(){
-ClimbMotorTop.setVoltage(6);
+ClimbMotorTop.setVoltage(12);
 }
 
 private void Stopped(){
@@ -100,7 +100,7 @@ if(FwdLimit()){
   ClimbMotorTop.setPosition(0);
   mClimberstate = climberState.S_Stopped;
 } else{
-  ClimbMotorTop.setVoltage(-4);
+  ClimbMotorTop.setVoltage(4);
 }
 }
 

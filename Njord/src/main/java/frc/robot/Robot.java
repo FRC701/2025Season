@@ -138,7 +138,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
    Elevator.mElevatorState = ElevatorState.S_Reset;
    Pivot.pivotState = PivotState.S_Reset;
-  //  Climber.mClimberstate = climberState.S_Reset;
+   Climber.mClimberstate = climberState.S_Reset;
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

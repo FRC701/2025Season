@@ -61,8 +61,8 @@ public class Elevator extends SubsystemBase {
     m_elevatorMotorf.getConfigurator().apply(fx_cfg);
 
         mTalonFXConfig = new TalonFXConfiguration().withVoltage(new VoltageConfigs()
-        .withPeakForwardVoltage(4)
-        .withPeakReverseVoltage(-4));
+        .withPeakForwardVoltage(8)
+        .withPeakReverseVoltage(-8));
 
         m_elevatorMotor.getConfigurator().apply(mTalonFXConfig);
         m_elevatorMotorf.getConfigurator().apply(mTalonFXConfig);
