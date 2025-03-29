@@ -7,12 +7,15 @@ package frc.robot.subsystems;
 
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.ReverseLimitValue;
 
@@ -40,6 +43,14 @@ public class Climber extends SubsystemBase {
 
      mClimberstate = climberState.S_Reset;
 
+     var Slot0Configs = new Slot0Configs();
+     Slot0Configs.kS = 0;
+     Slot0Configs.kV = 0;
+     Slot0Configs.kP = 0;
+     Slot0Configs.kI = 0;
+     Slot0Configs.kD = 0;
+
+
      
     var fx_cfg = new MotorOutputConfigs();
 
@@ -63,14 +74,11 @@ public class Climber extends SubsystemBase {
   }
 
   public enum climberState{
-    S_HooksUp, S_HooksDown, S_Stopped, S_Reset
+   S_HooksDown, S_Stopped, S_Reset
   }
 
   private void runClimberState(){
     switch(mClimberstate){
-      case S_HooksUp:
-      HooksUp();
-      break;
       case S_HooksDown:
       HooksDown();
       break;
@@ -83,12 +91,9 @@ public class Climber extends SubsystemBase {
     }
   }
 
-private void HooksUp(){
-ClimbMotorTop.setVoltage(-12);
-}
 
 private void HooksDown(){
-ClimbMotorTop.setVoltage(12);
+setPosition(-0.5);
 }
 
 private void Stopped(){
@@ -102,6 +107,11 @@ if(FwdLimit()){
 } else{
   ClimbMotorTop.setVoltage(4);
 }
+}
+
+private void setPosition(double position){
+  PositionVoltage pos = new PositionVoltage(position).withSlot(0);
+  ClimbMotorTop.setControl(pos);
 }
 
 private double GetPose(){

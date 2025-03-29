@@ -7,8 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Elevator.ElevatorState;
-import frc.robot.subsystems.Pivot;
-import frc.robot.subsystems.Pivot.PivotState;;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

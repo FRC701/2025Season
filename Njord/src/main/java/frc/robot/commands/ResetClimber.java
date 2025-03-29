@@ -11,14 +11,14 @@ import frc.robot.subsystems.Climber.climberState;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class HooksDownCommand extends InstantCommand {
-  public HooksDownCommand() {
+public class ResetClimber extends InstantCommand {
+  public ResetClimber() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Climber.mClimberstate = climberState.S_HooksDown;
+    Climber.mClimberstate = climberState.S_Reset;
   }
 }

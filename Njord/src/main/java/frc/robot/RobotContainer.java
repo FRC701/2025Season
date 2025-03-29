@@ -19,15 +19,13 @@ import frc.robot.commands.EnableRollers;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.Outtake;
-import frc.robot.commands.PivotLevelsCommand;
-import frc.robot.commands.ReversePivot;
-import frc.robot.commands.RunPivot;
+import frc.robot.commands.ReturnIntake;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.Pivot;
-import frc.robot.subsystems.PoseEstimateFeed;
+import frc.robot.
+subsystems.PoseEstimateFeed;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.commands.HooksDownCommand;
-import frc.robot.commands.HooksUpCommand;
+import frc.robot.commands.ResetClimber;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
@@ -85,9 +83,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private final Elevator m_elevator = new Elevator();
-  private final Pivot m_pivot = new Pivot();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final Climber m_climber = new Climber();
+//   private final Climber m_climber = new Climber();
   private final Intake m_intakeSubsytem = new Intake();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -189,11 +186,12 @@ public class RobotContainer {
     CoDriver.b().onTrue(new ElevatorPivot(4));
     CoDriver.leftBumper().onTrue(new ElevatorPivot(5));
 
-    Driver.y().whileTrue(new HooksDownCommand(m_climber));
-    Driver.a().whileTrue(new HooksUpCommand(m_climber));
+    // Driver.y().onTrue(new HooksDownCommand(m_climber));
+    // Driver.a().onTrue(new ResetClimber(m_climber));
 
-    Driver.x().whileTrue(new EnableRollers());
-    Driver.b().whileTrue(new Outtake());
+
+    Driver.x().onTrue(new ReturnIntake());
+    Driver.b().onTrue(new Outtake());
 
     // Driver.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     // Driver.y().whileTrue(new RunPivot());

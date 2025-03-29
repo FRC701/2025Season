@@ -11,14 +11,19 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.ReverseLimitValue;
+import frc.robot.subsystems.Elevator.ElevatorState;
 
+import edu.wpi.first.units.measure.Power;
 import edu.wpi.first.wpilibj.DutyCycle;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Pivot.PivotState;
 
 public class Intake extends SubsystemBase {
   private TalonFX m_IntakeMotor;
@@ -28,13 +33,17 @@ public class Intake extends SubsystemBase {
   public static IntakeState intakeState;
   private final TalonFXConfiguration mTalonFXConfig;
 
+
   /** Creates a new Intake. */
   public Intake() {
     enableRollers = false;
-    intakeState = IntakeState.S_Stopped;
+    intakeState = IntakeState.S_Rolling;
     m_IntakeMotor = new TalonFX(Constants.IntakeConstants.kIntakeMotor1, "cani");
-    outtakeTimer = new Timer();
     var Brake = new MotorOutputConfigs();
+    outtakeTimer = new Timer();
+
+
+
 
     Brake.NeutralMode = NeutralModeValue.Brake;
     
@@ -64,43 +73,53 @@ public class Intake extends SubsystemBase {
 
   public void Stopped(){
     enableRollers = false;
-    DutyCycleOut speed = new DutyCycleOut(-0.05);
-    m_IntakeMotor.setControl(speed);
+    m_IntakeMotor.stopMotor();
   }
 
   public void Rolling(){
-    if(HasCoral()){
+  if(HasCoral()){
       intakeState = IntakeState.S_Stopped;
-      Pivot.pivotState =PivotState.S_HasCoral;
     } else{
-      m_IntakeMotor.setVoltage(-1.5);
-    }
-  }
+      m_IntakeMotor.setVoltage(1);
+     }
+   }
 
   public void Outtake(){
-    m_IntakeMotor.setVoltage(4);
     outtakeTimer.start();
     if(outtakeTimer.hasElapsed(0.5)){
-      intakeState = IntakeState.S_Stopped;
+      intakeState = IntakeState.S_Rolling;
       outtakeTimer.stop();
       outtakeTimer.reset();
+    }else{
+    if(Elevator.mElevatorState == ElevatorState.S_L4){
+      m_IntakeMotor.setVoltage(2);
+    }else{
+      m_IntakeMotor.setVoltage(4);
     }
   }
+}
+
+
+    // if(HasCoral()){
+  //     m_IntakeMotor.setVoltage(4);
+  //   } 
+  //   else{
+  //     intakeState = IntakeState.S_Rolling;
+  // //   }
+    // }
+
+
 
     public boolean HasCoral() {
-      if (m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 25.0 ) {
-        return true;
-      } 
-      else {
-        return false;
-      }
+      // return m_IntakeMotor.getForwardLimit().getValue() == ForwardLimitValue.ClosedToGround;
+      return m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 30;
     }
 
 
 
   @Override
   public void periodic() {
-    
+
     RunIntakeStates();
     SmartDashboard.putString("IntakeState", intakeState.toString());
     SmartDashboard.putNumber("IntakeStatorCurrent", m_IntakeMotor.getStatorCurrent().getValueAsDouble());
@@ -108,5 +127,6 @@ public class Intake extends SubsystemBase {
     SmartDashboard.putBoolean("rollersenabled", enableRollers);
 
     SmartDashboard.putString("getState", intakeState.toString());
+
   }
 }

@@ -37,14 +37,6 @@ public final class Constants {
     public static final int kCoDriverControllerPort = 1;
   }
 
-  public static class PivotConstants{
-    public static final int kPivotMotor = 23;
-    public static final double kLevel1Angle = 4.5; // SIX SEVEN
-    public static final double kLevel2Angle = 4.5;//placeholder
-    public static final double kLevel3Angle = 4.5;//placeholder
-    public static final double kLevel4Angle = 4.0;//placeholder
-    public static final double kLevel5Angle = 2.5;
-  }
   public static class ClimberConstants {
   public static final int kClimbBottom = 30;
   public static final int kClimbTop = 31;
@@ -55,9 +47,9 @@ public final class Constants {
     public static final int kElevatorMotor2 = 2;
 
     public static final double kLevel1Height = 0;
-    public static final double kLevel2Height = 0; //placeholder
-    public static final double kLevel3Height = 10.9; //placeholder
-    public static final double kLevel4Height = 28; //placeholder
+    public static final double kLevel2Height = 5.28; //placeholder
+    public static final double kLevel3Height = 14.03; //placeholder
+    public static final double kLevel4Height = 28.13; //placeholder
     public static final double kLevel5Height = 0;
   }
   public static final Transform3d robotToLimeLight3d =

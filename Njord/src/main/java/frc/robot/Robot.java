@@ -20,10 +20,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Climber.climberState;
 import frc.robot.subsystems.Elevator.ElevatorState;
-import frc.robot.subsystems.Pivot.PivotState;
+import frc.robot.subsystems.Intake.IntakeState;
+import frc.robot.subsystems.Intake;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -37,8 +37,6 @@ public class Robot extends TimedRobot {
 
   private final boolean kUseLimelight = false;
 
-
-  private final Pivot mElevator = new Pivot();
   
   private Thread thredhaha;
 
@@ -117,7 +115,6 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    Pivot.pivotState = PivotState.S_Reset;
     Elevator.mElevatorState = ElevatorState.S_Reset;
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
@@ -137,8 +134,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
    Elevator.mElevatorState = ElevatorState.S_Reset;
-   Pivot.pivotState = PivotState.S_Reset;
    Climber.mClimberstate = climberState.S_Reset;
+   Intake.intakeState = IntakeState.S_Rolling;
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
