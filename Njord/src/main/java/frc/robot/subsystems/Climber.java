@@ -35,13 +35,13 @@ public class Climber extends SubsystemBase {
 
   /** Creates a new Climb. */
   public Climber() {
-    ClimbMotorBottom = new TalonFX(Constants.ClimberConstants.kClimbBottom, "cani");
-    ClimbMotorTop = new TalonFX(Constants.ClimberConstants.kClimbTop, "cani");
+    ClimbMotorBottom = new TalonFX(Constants.ClimberConstants.kClimbBottom, "rio");
+    ClimbMotorTop = new TalonFX(Constants.ClimberConstants.kClimbTop, "rio");
     
     ClimbMotorBottom.setControl(new Follower(Constants.ClimberConstants.kClimbTop,
      false));
 
-     mClimberstate = climberState.S_Reset;
+     mClimberstate = climberState.S_Stopped;
 
      var Slot0Configs = new Slot0Configs();
      Slot0Configs.kS = 0;
@@ -59,16 +59,16 @@ public class Climber extends SubsystemBase {
     ClimbMotorBottom.getConfigurator().apply(fx_cfg);
     ClimbMotorTop.getConfigurator().apply(fx_cfg);
 
-    mTalonFXConfig = new TalonFXConfiguration().withVoltage((new VoltageConfigs()
-    .withPeakForwardVoltage(12)
-    .withPeakReverseVoltage(-12)))
-    .withSoftwareLimitSwitch(
-      new SoftwareLimitSwitchConfigs()
-        .withReverseSoftLimitThreshold(REVERSE_LIMIT)
-        .withReverseSoftLimitEnable(true));
+    // mTalonFXConfig = new TalonFXConfiguration().withVoltage((new VoltageConfigs()
+    // .withPeakForwardVoltage(12)
+    // .withPeakReverseVoltage(-12)));
+    // .withSoftwareLimitSwitch(
+    //   new SoftwareLimitSwitchConfigs()
+    //     .withReverseSoftLimitThreshold(REVERSE_LIMIT)
+    //     .withReverseSoftLimitEnable(true));
 
-    ClimbMotorBottom.getConfigurator().apply(mTalonFXConfig);
-    ClimbMotorTop.getConfigurator().apply(mTalonFXConfig);
+    // ClimbMotorBottom.getConfigurator().apply(mTalonFXConfig);
+    // ClimbMotorTop.getConfigurator().apply(mTalonFXConfig);
 
   
   }
@@ -86,28 +86,31 @@ public class Climber extends SubsystemBase {
       Stopped();
       break;
       case S_Reset:
-      Reset();
+      // Reset();
       break;
     }
   }
 
 
 private void HooksDown(){
-setPosition(-0.5);
+// setPosition(-0.5);
+ClimbMotorBottom.setVoltage(12);
+ClimbMotorTop.setVoltage(12);
 }
 
 private void Stopped(){
+  ClimbMotorBottom.stopMotor();
 ClimbMotorTop.stopMotor();
 }
 
-private void Reset(){
-if(FwdLimit()){
-  ClimbMotorTop.setPosition(0);
-  mClimberstate = climberState.S_Stopped;
-} else{
-  ClimbMotorTop.setVoltage(4);
-}
-}
+// private void Reset(){
+// if(FwdLimit()){
+//   ClimbMotorTop.setPosition(0);
+//   mClimberstate = climberState.S_Stopped;
+// } else{
+//   ClimbMotorTop.setVoltage(4);
+// }
+// }
 
 private void setPosition(double position){
   PositionVoltage pos = new PositionVoltage(position).withSlot(0);

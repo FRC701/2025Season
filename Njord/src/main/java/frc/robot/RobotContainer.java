@@ -14,6 +14,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AutonomousSequencing;
 import frc.robot.commands.Autos;
+import frc.robot.commands.ClimbNOW;
 import frc.robot.commands.ElevatorPivot;
 import frc.robot.commands.EnableRollers;
 import frc.robot.commands.ExampleCommand;
@@ -84,7 +85,7 @@ public class RobotContainer {
 
   private final Elevator m_elevator = new Elevator();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-//   private final Climber m_climber = new Climber();
+  private final Climber m_climber = new Climber();
   private final Intake m_intakeSubsytem = new Intake();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -186,7 +187,7 @@ public class RobotContainer {
     CoDriver.b().onTrue(new ElevatorPivot(4));
     CoDriver.leftBumper().onTrue(new ElevatorPivot(5));
 
-    // Driver.y().onTrue(new HooksDownCommand(m_climber));
+    Driver.y().whileTrue(new ClimbNOW());
     // Driver.a().onTrue(new ResetClimber(m_climber));
 
 
