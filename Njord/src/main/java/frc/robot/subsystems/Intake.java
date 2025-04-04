@@ -94,7 +94,7 @@ public class Intake extends SubsystemBase {
     if(Elevator.mElevatorState == ElevatorState.S_L4){
       m_IntakeMotor.setVoltage(2.5);
     }else if(Elevator.mElevatorState == ElevatorState.S_L1){
-      m_IntakeMotor.setVoltage(2.5);
+      m_IntakeMotor.setVoltage(3.5);
     }else{
       m_IntakeMotor.setVoltage(4);
     }

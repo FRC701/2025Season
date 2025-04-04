@@ -1,0 +1,99 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.995625,
+        "y": 5.204749999999999
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.424693897114477,
+        "y": 5.062645450995539
+      },
+      "isLocked": false,
+      "linkedName": "start_2"
+    },
+    {
+      "anchor": {
+        "x": 3.8853750000000002,
+        "y": 5.4338750000000005
+      },
+      "prevControl": {
+        "x": 4.638284675866603,
+        "y": 5.762610210589645
+      },
+      "nextControl": {
+        "x": 3.53925,
+        "y": 5.28275
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.9054999999999995,
+        "y": 4.38575
+      },
+      "prevControl": {
+        "x": 2.962641383014103,
+        "y": 4.629132132350005
+      },
+      "nextControl": {
+        "x": 2.848358616985896,
+        "y": 4.142367867649995
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.0663750000000003,
+        "y": 3.4448749999999997
+      },
+      "prevControl": {
+        "x": 3.019968141077085,
+        "y": 3.6905300497036615
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Reef_B"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.8101167315175173,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 1.0949416342412515,
+      "rotationDegrees": 30.230102355338023
+    },
+    {
+      "waypointRelativePos": 1.580544747081731,
+      "rotationDegrees": 55.07595445007279
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 8.0,
+    "maxAngularVelocity": 720.0,
+    "maxAngularAcceleration": 1400.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": "start2 to reef",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -53.24632081446847
+  },
+  "useDefaultConstraints": true
+}

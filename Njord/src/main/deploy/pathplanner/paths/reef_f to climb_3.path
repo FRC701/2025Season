@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.6745,
+        "y": 2.9915000000000003
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.5276250000000005,
+        "y": 3.4984999999999995
+      },
+      "isLocked": false,
+      "linkedName": "Reef_F"
+    },
+    {
+      "anchor": {
+        "x": 8.506875,
+        "y": 5.082875
+      },
+      "prevControl": {
+        "x": 7.683,
+        "y": 4.75625
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Climb_3"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 8.0,
+    "maxAngularVelocity": 720.0,
+    "maxAngularAcceleration": 1400.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "misc",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -150.34089076400494
+  },
+  "useDefaultConstraints": true
+}
