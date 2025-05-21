@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.991375000000001,
-        "y": 4.234624999999999
+        "x": 5.74,
+        "y": 4.235
       },
       "prevControl": {
-        "x": 6.40575,
-        "y": 5.73125
+        "x": 6.154375000000012,
+        "y": 5.731625000000001
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": -90.5115558665871
   },
   "reversed": false,
-  "folder": "station_left to reef",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 126.54497232282255

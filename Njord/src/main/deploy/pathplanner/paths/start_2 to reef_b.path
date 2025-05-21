@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.995625,
-        "y": 5.204749999999999
+        "x": 7.213973384030417,
+        "y": 5.519708491761723
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.424693897114477,
-        "y": 5.062645450995539
+        "x": 7.643042281144894,
+        "y": 5.377603942757264
       },
       "isLocked": false,
       "linkedName": "start_2"
@@ -90,10 +90,10 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": "start2 to reef",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -53.24632081446847
+    "rotation": -0.1123078724546867
   },
   "useDefaultConstraints": true
 }
