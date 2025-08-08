@@ -32,6 +32,7 @@ public class Intake extends SubsystemBase {
 
   public static IntakeState intakeState;
   private final TalonFXConfiguration mTalonFXConfig;
+  public static boolean IntakeActive;
 
 
   /** Creates a new Intake. */
@@ -41,6 +42,7 @@ public class Intake extends SubsystemBase {
     m_IntakeMotor = new TalonFX(Constants.IntakeConstants.kIntakeMotor1, "cani");
     var Brake = new MotorOutputConfigs();
     outtakeTimer = new Timer();
+    IntakeActive = true;
 
 
 
@@ -75,9 +77,11 @@ public class Intake extends SubsystemBase {
     enableRollers = false;
     m_IntakeMotor.stopMotor();
   }
+  
 
   public void Rolling(){
-  if(HasCoral()){
+    HasCoral();
+  if(!IntakeActive){
       intakeState = IntakeState.S_Stopped;
     } else{
       m_IntakeMotor.setVoltage(1);
@@ -87,6 +91,7 @@ public class Intake extends SubsystemBase {
   public void Outtake(){
     outtakeTimer.start();
     if(outtakeTimer.hasElapsed(0.5)){
+      IntakeActive = true;
       intakeState = IntakeState.S_Rolling;
       outtakeTimer.stop();
       outtakeTimer.reset();
@@ -94,9 +99,9 @@ public class Intake extends SubsystemBase {
     if(Elevator.mElevatorState == ElevatorState.S_L4){
       m_IntakeMotor.setVoltage(2.5);
     }else if(Elevator.mElevatorState == ElevatorState.S_L1){
-      m_IntakeMotor.setVoltage(3.5);
+      m_IntakeMotor.setVoltage(5.5);
     }else{
-      m_IntakeMotor.setVoltage(4);
+      m_IntakeMotor.setVoltage(5);
     }
   }
 }
@@ -112,20 +117,21 @@ public class Intake extends SubsystemBase {
 
 
 
-    public boolean HasCoral() {
+    public void HasCoral() {
       // return m_IntakeMotor.getForwardLimit().getValue() == ForwardLimitValue.ClosedToGround;
-      return m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 30;
+      if(m_IntakeMotor.getStatorCurrent().getValueAsDouble() > 47){
+        IntakeActive = false;
+      }
     }
 
 
 
   @Override
   public void periodic() {
-
     RunIntakeStates();
     SmartDashboard.putString("IntakeState", intakeState.toString());
     SmartDashboard.putNumber("IntakeStatorCurrent", m_IntakeMotor.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putBoolean("HasCoral", HasCoral());
+    //SmartDashboard.putBoolean("HasCoral", HasCoral());
     SmartDashboard.putBoolean("rollersenabled", enableRollers);
 
     SmartDashboard.putString("getState", intakeState.toString());

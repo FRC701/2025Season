@@ -116,6 +116,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Elevator.mElevatorState = ElevatorState.S_Reset;
+    Intake.intakeState = IntakeState.S_Stopped;
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -136,6 +137,7 @@ public class Robot extends TimedRobot {
    Elevator.mElevatorState = ElevatorState.S_Reset;
    Climber.mClimberstate = climberState.S_Stopped;
    Intake.intakeState = IntakeState.S_Rolling;
+   Intake.IntakeActive = true;
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

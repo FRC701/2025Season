@@ -20,7 +20,7 @@ import frc.robot.commands.EnableRollers;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.Outtake;
-import frc.robot.commands.ReturnIntake;
+import frc.robot.commands.ActivateIntake;
 import frc.robot.generated.TunerConstants;
 import frc.robot.
 subsystems.PoseEstimateFeed;
@@ -103,7 +103,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Level4", new ElevatorPivot(4));
     NamedCommands.registerCommand("Outtake", new Outtake());
 
-       autoChooser = AutoBuilder.buildAutoChooser("New Auto");
+       autoChooser = AutoBuilder.buildAutoChooser("Auto Straight Taxi");
         SmartDashboard.putData("Auto Mode", autoChooser);
     // Configure the trigger bindings
     configureBindings();
@@ -142,16 +142,16 @@ public class RobotContainer {
         //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         // ));
 
-        Driver.pov(0).whileTrue(drivetrain.applyRequest(() ->
+        Driver.pov(270).whileTrue(drivetrain.applyRequest(() ->
             forwardStraight.withVelocityX(0.375).withVelocityY(0))
         );
-        Driver.pov(180).whileTrue(drivetrain.applyRequest(() ->
+        Driver.pov(90).whileTrue(drivetrain.applyRequest(() ->
             forwardStraight.withVelocityX(-0.375).withVelocityY(0))
         );
-        Driver.pov(90).whileTrue(drivetrain.applyRequest(() ->
+        Driver.pov(0).whileTrue(drivetrain.applyRequest(() ->
             forwardStraight.withVelocityX(0.0).withVelocityY(-0.375))
         );
-        Driver.pov(270).whileTrue(drivetrain.applyRequest(() ->
+        Driver.pov(180).whileTrue(drivetrain.applyRequest(() ->
             forwardStraight.withVelocityX(0.0).withVelocityY(0.375))
         );
 
@@ -181,8 +181,8 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
 
-    CoDriver.x().onTrue(new ElevatorPivot(1));
-    CoDriver.a().onTrue(new ElevatorPivot(2));
+    CoDriver.a().onTrue(new ElevatorPivot(1));
+    CoDriver.x().onTrue(new ElevatorPivot(2));
     CoDriver.y().onTrue(new ElevatorPivot(3));
     CoDriver.b().onTrue(new ElevatorPivot(4));
     CoDriver.leftBumper().onTrue(new ElevatorPivot(5));
@@ -191,7 +191,7 @@ public class RobotContainer {
     // Driver.a().onTrue(new ResetClimber(m_climber));
 
 
-    Driver.x().onTrue(new ReturnIntake());
+    Driver.x().onTrue(new ActivateIntake());
     Driver.b().onTrue(new Outtake());
 
     // Driver.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
