@@ -8,24 +8,25 @@ package frc.robot;
 import frc.robot.Telemetry;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.fasterxml.jackson.databind.util.Named;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AutonomousSequencing;
 import frc.robot.commands.Autos;
+import frc.robot.commands.ClimbNOW;
 import frc.robot.commands.ElevatorPivot;
 import frc.robot.commands.EnableRollers;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.Outtake;
-import frc.robot.commands.PivotLevelsCommand;
-import frc.robot.commands.ReversePivot;
-import frc.robot.commands.RunPivot;
+import frc.robot.commands.ActivateIntake;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.Pivot;
-import frc.robot.subsystems.PoseEstimateFeed;
+import frc.robot.
+subsystems.PoseEstimateFeed;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.commands.HooksDownCommand;
-import frc.robot.commands.HooksUpCommand;
+import frc.robot.commands.ResetClimber;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
@@ -37,6 +38,7 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 // import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveModule.DriveRequestType;
 // import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -59,7 +61,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 // All code besides import goes into this
 public class RobotContainer {
 
-  PoseEstimateFeed m_PoseEstimateFeed = new PoseEstimateFeed();
+  // PoseEstimateFeed m_PoseEstimateFeed = new PoseEstimateFeed();
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
@@ -74,7 +76,7 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandXboxController joystick = new CommandXboxController(0);
+    //private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -82,7 +84,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private final Elevator m_elevator = new Elevator();
-  private final Pivot m_pivot = new Pivot();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Climber m_climber = new Climber();
   private final Intake m_intakeSubsytem = new Intake();
@@ -98,8 +99,11 @@ public class RobotContainer {
    */
   // Constructor
   public RobotContainer() {
+    
+    NamedCommands.registerCommand("Level4", new ElevatorPivot(4));
+    NamedCommands.registerCommand("Outtake", new Outtake());
 
-       autoChooser = AutoBuilder.buildAutoChooser("Tests");
+       autoChooser = AutoBuilder.buildAutoChooser("Auto Straight Taxi");
         SmartDashboard.putData("Auto Mode", autoChooser);
     // Configure the trigger bindings
     configureBindings();
@@ -127,33 +131,45 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(-Driver.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-Driver.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-Driver.getRightX() * MaxAngularRate * 0.75) // Drive counterclockwise with negative X (left)
             )
         );
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        ));
+        // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        // joystick.b().whileTrue(drivetrain.applyRequest(() ->
+        //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        // ));
 
-        joystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(0.5).withVelocityY(0))
+        Driver.pov(270).whileTrue(drivetrain.applyRequest(() ->
+            forwardStraight.withVelocityX(0.375).withVelocityY(0))
         );
-        joystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(-0.5).withVelocityY(0))
+        Driver.pov(90).whileTrue(drivetrain.applyRequest(() ->
+            forwardStraight.withVelocityX(-0.375).withVelocityY(0))
         );
+        Driver.pov(0).whileTrue(drivetrain.applyRequest(() ->
+            forwardStraight.withVelocityX(0.0).withVelocityY(-0.375))
+        );
+        Driver.pov(180).whileTrue(drivetrain.applyRequest(() ->
+            forwardStraight.withVelocityX(0.0).withVelocityY(0.375))
+        );
+
+        Driver.rightTrigger().whileTrue(drivetrain.applyRequest(()-> 
+            drive.withRotationalRate(-MaxAngularRate * 0.15)));
+        Driver.leftTrigger().whileTrue(drivetrain.applyRequest(()-> 
+            drive.withRotationalRate(MaxAngularRate * 0.15)));
+        
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        Driver.back().and(Driver.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        Driver.back().and(Driver.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        Driver.start().and(Driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        Driver.start().and(Driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        Driver.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -165,17 +181,18 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
 
-    CoDriver.x().onTrue(new ElevatorPivot(1));
-    CoDriver.a().onTrue(new ElevatorPivot(2));
+    CoDriver.a().onTrue(new ElevatorPivot(1));
+    CoDriver.x().onTrue(new ElevatorPivot(2));
     CoDriver.y().onTrue(new ElevatorPivot(3));
     CoDriver.b().onTrue(new ElevatorPivot(4));
     CoDriver.leftBumper().onTrue(new ElevatorPivot(5));
 
-    Driver.y().whileTrue(new HooksDownCommand(m_climber));
-    Driver.a().whileTrue(new HooksUpCommand(m_climber));
+    Driver.y().whileTrue(new ClimbNOW());
+    // Driver.a().onTrue(new ResetClimber(m_climber));
 
-    Driver.x().whileTrue(new EnableRollers());
-    Driver.b().whileTrue(new Outtake());
+
+    Driver.x().onTrue(new ActivateIntake());
+    Driver.b().onTrue(new Outtake());
 
     // Driver.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     // Driver.y().whileTrue(new RunPivot());
@@ -185,6 +202,8 @@ public class RobotContainer {
     // Driver.a().onTrue(new PivotLevelsCommand(2));
     // Driver.y().onTrue(new PivotLevelsCommand(3));
     // Driver.b().onTrue(new PivotLevelsCommand(4));
+
+
   }
 
   /**

@@ -4,15 +4,26 @@
 
 package frc.robot;
 
+import org.opencv.core.Mat;
+
 import com.ctre.phoenix6.SignalLogger;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Climber.climberState;
+import frc.robot.subsystems.Elevator.ElevatorState;
+import frc.robot.subsystems.Intake.IntakeState;
+import frc.robot.subsystems.Intake;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -26,15 +37,40 @@ public class Robot extends TimedRobot {
 
   private final boolean kUseLimelight = false;
 
-
-  private final Pivot mElevator = new Pivot();
+  
+  private Thread thredhaha;
 
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   public Robot() {
-    // mElevator.resetPosition();
+  //    thredhaha =
+  //    new Thread (
+  //    () -> {
+  //    UsbCamera usbCam = CameraServer.startAutomaticCapture();
+
+  //    usbCam.setResolution(640, 480);   
+
+  //    CvSink cvSin = CameraServer.getVideo();
+
+  //    CvSource outputStrem = CameraServer.putVideo("Rectangle", 640, 480);
+
+  //   Mat mat = new Mat();
+  //  while (!Thread.interrupted()) {
+  //      if(cvSin.grabFrame(mat) == 0){
+
+  //        outputStrem.notifyError((cvSin.getError()));
+  //       continue;
+  //      }
+      
+  //    }
+  //    });
+  
+  CameraServer.startAutomaticCapture(0);
+  CameraServer.startAutomaticCapture(1);
+
+     // mElevator.resetPosition();
     SmartDashboard.putNumber("DesiredHeight", 0);
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
@@ -79,6 +115,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    Elevator.mElevatorState = ElevatorState.S_Reset;
+    Intake.intakeState = IntakeState.S_Stopped;
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -96,6 +134,10 @@ public class Robot extends TimedRobot {
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
+   Elevator.mElevatorState = ElevatorState.S_Reset;
+   Climber.mClimberstate = climberState.S_Stopped;
+   Intake.intakeState = IntakeState.S_Rolling;
+   Intake.IntakeActive = true;
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

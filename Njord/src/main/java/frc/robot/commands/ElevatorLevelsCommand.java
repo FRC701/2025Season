@@ -7,16 +7,16 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Elevator.ElevatorState;
-import frc.robot.subsystems.Pivot;
-import frc.robot.subsystems.Pivot.PivotState;;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ElevatorLevelsCommand extends InstantCommand {
   int level = 0;
+  Elevator mElevator = new Elevator();
   public ElevatorLevelsCommand(int level) {
     this.level = level;
+    addRequirements(mElevator);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -45,8 +45,9 @@ public class ElevatorLevelsCommand extends InstantCommand {
         break;
         case 5:
         Elevator.mElevatorState = ElevatorState.S_PickUp;
-
         break;
+
+        
     }
   }
 }

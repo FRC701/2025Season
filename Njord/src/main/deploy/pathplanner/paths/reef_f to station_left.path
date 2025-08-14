@@ -1,0 +1,99 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.6745,
+        "y": 2.9915000000000003
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.884141936533605,
+        "y": 3.127699333502187
+      },
+      "isLocked": false,
+      "linkedName": "Reef_F"
+    },
+    {
+      "anchor": {
+        "x": 5.986500000000001,
+        "y": 4.015249999999999
+      },
+      "prevControl": {
+        "x": 5.9924850339109526,
+        "y": 3.427672607463158
+      },
+      "nextControl": {
+        "x": 5.978774094950045,
+        "y": 4.773736453340501
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.694000000000001,
+        "y": 5.029249999999999
+      },
+      "prevControl": {
+        "x": 5.819567442815985,
+        "y": 4.81307225529751
+      },
+      "nextControl": {
+        "x": 5.537275254501929,
+        "y": 5.299068364227546
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.750125,
+        "y": 7.2132499999999995
+      },
+      "prevControl": {
+        "x": 1.5088766531183673,
+        "y": 7.278818552880778
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Station_Left"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.1610894941634256,
+      "rotationDegrees": 58.28287480747063
+    },
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 71.22074751688432
+    },
+    {
+      "waypointRelativePos": 1.6015564202334667,
+      "rotationDegrees": 119.49811881766588
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 8.0,
+    "maxAngularVelocity": 720.0,
+    "maxAngularAcceleration": 1400.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 126.54497232282255
+  },
+  "reversed": false,
+  "folder": "reef to station_left",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -150.34089076400494
+  },
+  "useDefaultConstraints": true
+}

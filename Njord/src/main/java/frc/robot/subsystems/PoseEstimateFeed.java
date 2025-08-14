@@ -161,22 +161,22 @@ public class PoseEstimateFeed extends SubsystemBase {
 
   @Override
   public void periodic() {
-    m_field2d.setRobotPose(m_swerveDrivetrain.getPose());
-    var limeLight = m_limeLight.getLatestResult();
-    var fishEye = m_fishEye.getLatestResult();
+    // m_field2d.setRobotPose(m_swerveDrivetrain.getPose());
+    // var limeLight = m_limeLight.getLatestResult();
+    // var fishEye = m_fishEye.getLatestResult();
 
-    SmartDashboard.putNumber("Rotation", m_swerveDrivetrain.getPose().getRotation().getDegrees());
+    // SmartDashboard.putNumber("Rotation", m_swerveDrivetrain.getPose().getRotation().getDegrees());
 
-    if (limeLight.hasTargets() || fishEye.hasTargets()) {
-      // SmartDashboard.putBoolean("EstimateReady", UpdateVisionPose());
-      SmartDashboard.putNumber("apriltagcheck", m_aprilTagFieldLayout.getTagPose(19).get().getX());
-      updateCTREpose();
-      // SmartDashboard.putNumber("GetTagID", limeLight.getBestTarget().fiducialId);
-      // m_field2d.setRobotPose(UpdateVisionPose().get().estimatedPose.toPose2d());
-      // UpdateVisionPose(); // remove when using global
-      // m_field2d.setRobotPose(UpdateGlobalPose());
-      // SmartDashboard.putNumber("Distance Inches", getDistance());
-    }
-    // This method will be called once per scheduler run
+    // if (limeLight.hasTargets() || fishEye.hasTargets()) {
+    //   // SmartDashboard.putBoolean("EstimateReady", UpdateVisionPose());
+    //   SmartDashboard.putNumber("apriltagcheck", m_aprilTagFieldLayout.getTagPose(19).get().getX());
+    //   updateCTREpose();
+    //   // SmartDashboard.putNumber("GetTagID", limeLight.getBestTarget().fiducialId);
+    //   // m_field2d.setRobotPose(UpdateVisionPose().get().estimatedPose.toPose2d());
+    //   // UpdateVisionPose(); // remove when using global
+    //   // m_field2d.setRobotPose(UpdateGlobalPose());
+    //   // SmartDashboard.putNumber("Distance Inches", getDistance());
+    // }
+    // // This method will be called once per scheduler run
   }
 }

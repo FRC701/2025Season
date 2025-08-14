@@ -61,8 +61,8 @@ public class Elevator extends SubsystemBase {
     m_elevatorMotorf.getConfigurator().apply(fx_cfg);
 
         mTalonFXConfig = new TalonFXConfiguration().withVoltage(new VoltageConfigs()
-        .withPeakForwardVoltage(4)
-        .withPeakReverseVoltage(-4));
+        .withPeakForwardVoltage(6)
+        .withPeakReverseVoltage(-6));
 
         m_elevatorMotor.getConfigurator().apply(mTalonFXConfig);
         m_elevatorMotorf.getConfigurator().apply(mTalonFXConfig);
@@ -94,19 +94,19 @@ public class Elevator extends SubsystemBase {
       resetPosition();
       break;
       case S_L1:
-      setPosition(ElevatorConstants.kLevel1Height);
+      setPosition(inchesToRotations(ElevatorConstants.kLevel1Height));
       break;
       case S_L2:
-      setPosition(ElevatorConstants.kLevel2Height); //placeholder
+      setPosition(inchesToRotations(ElevatorConstants.kLevel2Height)); //placeholder
       break;
       case S_L3:
-      setPosition(ElevatorConstants.kLevel3Height); //placeholder
+      setPosition(inchesToRotations(ElevatorConstants.kLevel3Height)); //placeholder
       break;
       case S_L4:
-      setPosition(ElevatorConstants.kLevel4Height); //placeholder
+      setPosition(inchesToRotations(ElevatorConstants.kLevel4Height)); //placeholder
       break;
       case S_PickUp:
-      setPosition(ElevatorConstants.kLevel5Height);
+      setPosition(inchesToRotations(ElevatorConstants.kLevel5Height));
     }
   }
     
@@ -156,7 +156,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean SetpointReached(double Setpoint){
-   return (getPosition() + 1 <= Setpoint) && (getPosition() - 1 >=Setpoint); 
+   return (getPosition() - 5 <= Setpoint) && (getPosition() + 5 >=Setpoint); 
   }
 
 
