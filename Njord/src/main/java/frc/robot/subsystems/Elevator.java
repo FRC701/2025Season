@@ -21,6 +21,7 @@ import com.ctre.phoenix6.signals.ReverseLimitValue;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 
 public class Elevator extends SubsystemBase {
@@ -37,6 +38,19 @@ public class Elevator extends SubsystemBase {
   private TalonFXConfiguration mTalonFXConfig;
 
   public static ElevatorState mElevatorState;
+
+  // Creates a SysIdRoutine
+/*SysIdRoutine routine = new SysIdRoutine(
+  new SysIdRoutine.Config(),
+  new SysIdRoutine.Mechanism(
+    voltage -> {
+      m_elevatorMotor.setVoltage(voltage);
+      m_elevatorMotorf.setVoltage(voltage);
+
+    },
+
+  )
+);*/
 
   public static double[] ElevatorArray = {
     ElevatorConstants.kLevel1Height,

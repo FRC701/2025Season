@@ -5,48 +5,35 @@
 
 package frc.robot;
 
-import frc.robot.Telemetry;
-
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.fasterxml.jackson.databind.util.Named;
-import com.ctre.phoenix6.swerve.SwerveRequest;
-
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.AutonomousSequencing;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ClimbNOW;
-import frc.robot.commands.ElevatorPivot;
-import frc.robot.commands.EnableRollers;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.Elevator;
-import frc.robot.commands.Outtake;
-import frc.robot.commands.ActivateIntake;
-import frc.robot.generated.TunerConstants;
-import frc.robot.
-subsystems.PoseEstimateFeed;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.commands.HooksDownCommand;
-import frc.robot.commands.ResetClimber;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Intake;
-
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 // import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveModule.DriveRequestType;
 // import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ActivateIntake;
+import frc.robot.commands.ClimbNOW;
+import frc.robot.commands.ElevatorPivot;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Outtake;
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -169,17 +156,31 @@ public class RobotContainer {
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
+        /*
         Tuner.back().and(Tuner.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
         Tuner.back().and(Tuner.a()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         Tuner.start().and(Tuner.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         Tuner.start().and(Tuner.a()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        */
 
-        Tuner.rightBumper().and(Tuner.x()).whileTrue(drivetrain.sysIdDynamic());
-        Tuner.rightBumper().and(Tuner.b()).whileTrue(drivetrain.sysIdDynamic());
-        Tuner.rightTrigger().and(Tuner.x()).whileTrue(drivetrain.);
+        Tuner.back().and(Tuner.y()).whileTrue(drivetrain.sysIdDynamicRotation(Direction.kForward));
+        Tuner.back().and(Tuner.a()).whileTrue(drivetrain.sysIdDynamicRotation(Direction.kReverse));
+        Tuner.start().and(Tuner.y()).whileTrue(drivetrain.sysIdQuasistaticRotation(Direction.kForward));
+        Tuner.start().and(Tuner.a()).whileTrue(drivetrain.sysIdQuasistaticRotation(Direction.kReverse));
+
+        Tuner.rightBumper().and(Tuner.x()).whileTrue(drivetrain.sysIdDynamicSteer(Direction.kForward));
+        Tuner.rightBumper().and(Tuner.b()).whileTrue(drivetrain.sysIdDynamicSteer(Direction.kReverse));
+        Tuner.rightTrigger().and(Tuner.x()).whileTrue(drivetrain.sysIdQuasistaticSteer(Direction.kForward));
+        Tuner.rightTrigger().and(Tuner.b()).whileTrue(drivetrain.sysIdQuasistaticSteer(Direction.kReverse));
+
+        Tuner.leftBumper().and(Tuner.x()).whileTrue(drivetrain.sysIdDynamicTranslation(Direction.kForward));
+        Tuner.leftBumper().and(Tuner.b()).whileTrue(drivetrain.sysIdDynamicTranslation(Direction.kReverse));
+        Tuner.leftTrigger().and(Tuner.x()).whileTrue(drivetrain.sysIdQuasistaticTranslation(Direction.kForward));
+        Tuner.leftTrigger().and(Tuner.b()).whileTrue(drivetrain.sysIdQuasistaticTranslation(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
         Driver.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        Tuner.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
