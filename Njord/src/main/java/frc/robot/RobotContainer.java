@@ -88,11 +88,17 @@ public class RobotContainer {
   private final Climber m_climber = new Climber();
   private final Intake m_intakeSubsytem = new Intake();
 
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController Driver = new CommandXboxController(
       Constants.OperatorConstants.kDriverControllerPort);
 
-  private final CommandXboxController CoDriver = new CommandXboxController(OperatorConstants.kCoDriverControllerPort);
+  private final CommandXboxController CoDriver = new CommandXboxController(
+    OperatorConstants.kCoDriverControllerPort);
+
+  private final CommandXboxController Tuner = new CommandXboxController(
+    OperatorConstants.kTunerControllerPort);
+
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -163,10 +169,14 @@ public class RobotContainer {
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        Driver.back().and(Driver.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        Driver.back().and(Driver.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        Driver.start().and(Driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        Driver.start().and(Driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        Tuner.back().and(Tuner.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        Tuner.back().and(Tuner.a()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        Tuner.start().and(Tuner.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        Tuner.start().and(Tuner.a()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+
+        Tuner.rightBumper().and(Tuner.x()).whileTrue(drivetrain.sysIdDynamic());
+        Tuner.rightBumper().and(Tuner.b()).whileTrue(drivetrain.sysIdDynamic());
+        Tuner.rightTrigger().and(Tuner.x()).whileTrue(drivetrain.);
 
         // reset the field-centric heading on left bumper press
         Driver.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
