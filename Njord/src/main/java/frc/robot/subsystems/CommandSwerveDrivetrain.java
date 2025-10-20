@@ -256,6 +256,19 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return m_sysIdRoutineToApply.quasistatic(direction);
     }
 
+    //this is for multiplebuttons to run sysid instead of m_sysidroutinetoapply
+    public Command sysIdQuasistaticRotation(SysIdRoutine.Direction direction) {
+        return m_sysIdRoutineRotation.quasistatic(direction);
+    }
+    
+    public Command sysIdQuasistaticSteer(SysIdRoutine.Direction direction) {
+        return m_sysIdRoutineSteer.quasistatic(direction);
+    }
+    
+    public Command sysIdQuasistaticTranslation(SysIdRoutine.Direction direction) {
+        return m_sysIdRoutineTranslation.quasistatic(direction);
+    }
+
     /**
      * Runs the SysId Dynamic test in the given direction for the routine
      * specified by {@link #m_sysIdRoutineToApply}.
@@ -265,6 +278,19 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      */
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return m_sysIdRoutineToApply.dynamic(direction);
+    }
+
+    //this is for multiplebuttons to run sysid instead of m_sysidroutinetoapply
+    public Command sysIdDynamicRotation(SysIdRoutine.Direction direction) {
+        return m_sysIdRoutineRotation.quasistatic(direction);
+    }
+    
+    public Command sysIdDynamicSteer(SysIdRoutine.Direction direction) {
+        return m_sysIdRoutineSteer.quasistatic(direction);
+    }
+    
+    public Command sysIdDynamicTranslation(SysIdRoutine.Direction direction) {
+        return m_sysIdRoutineTranslation.quasistatic(direction);
     }
 
     public Pose2d getPose(){
